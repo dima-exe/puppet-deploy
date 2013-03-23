@@ -10,20 +10,18 @@ class deploy(
   include 'deploy::params'
 
   $deploy_to = $deploy::params::deploy_to
-  $defaults  = { deploy_to => $deploy_to }
+
+  Exec["/bin/mkdir -p ${deploy_to}"] -> Deploy::Application <| |>
 
   exec { "/bin/mkdir -p ${deploy_to}":
     creates => $deploy_to
   }
 
-  Exec["/bin/mkdir -p ${deploy_to}"] -> Deploy::Application <| |>
-  Exec["/bin/mkdir -p ${deploy_to}"] -> Deploy::Rails <| |>
-
   if $applications != undef {
-    create_resources('deploy::application', $applications, $defaults)
+    create_resources('deploy::application', $applications)
   }
 
   if $rails != undef {
-    create_resources('deploy::rails', $rails, $defaults)
+    create_resources('deploy::rails', $applications)
   }
 }
