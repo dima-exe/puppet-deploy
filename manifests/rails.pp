@@ -1,23 +1,27 @@
 #
 define deploy::rails(
-  $ensure     = 'present',
-  $user       = $name,
-  $ssh_key    = undef,
-  $deploy_to  = $deploy::params::deploy_to,
+  $ensure          = 'present',
+  $user            = $name,
+  $ssh_key         = undef,
+  $deploy_to       = undef,
 
   $database_url    = undef,
   $resque_url      = undef,
   $env             = 'production',
   $num_web_workers = 2
 ) {
+  include 'deploy::params'
 
-  $deploy_path = "${deploy_to}/${name}"
+  $deploy_path = $deploy_to ? {
+    undef   => "${deploy::params::deploy_to}/${name}",
+    default => $deploy_to
+  }
 
   deploy::application{ $name:
     ensure    => 'present',
     user      => $user,
     ssh_key   => $ssh_key,
-    deploy_to => $deploy_to
+    deploy_to => $deploy_path
   }
 
   if $database_url != undef {

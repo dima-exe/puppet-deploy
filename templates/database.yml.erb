@@ -10,5 +10,5 @@ setup: &setup
   <% end -%>
 
 <%= env %>:
-  database: "<%= u.path[1..-1] %>"
+  database: "<%= s = u.path.to_s[1..-1]; s == "" ? "#{title.gsub('-', '_')}_#{env}" : s %>"
   <<: *setup
