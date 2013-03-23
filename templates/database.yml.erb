@@ -1,0 +1,14 @@
+<% u = URI(database_url) -%>
+setup: &setup
+  adapter: "<%= u.scheme %>"
+  host: "<%= u.host || "localhost" %>"
+  username: "<%= u.user || title %>"
+  password: "<%= u.password || title %>"
+  <% (u.query || "").split("&").each do |k| -%>
+  <% p = k.split("=") -%>
+  <%= p[0] %>: "<%= p[1] %>"
+  <% end -%>
+
+<%= env %>:
+  database: "<%= u.path[1..-1] %>"
+  <<: *setup
