@@ -14,10 +14,11 @@ describe "deploy::runit" do
   ) end
 
   it do should contain_resource("Runit::Service[my-app]").with(
-    :user    => 'my-app',
-    :rundir  => '/u/apps/my-app/services',
-    :command => 'runsvdir /u/apps/my-app/services',
-    :require => 'File[/u/apps/my-app/services]'
+    :user           => 'my-app',
+    :rundir         => '/u/apps/my-app/services',
+    :command        => 'runsvdir -P /u/apps/my-app/services',
+    :finish_content => /.+/,
+    :require        => 'File[/u/apps/my-app/services]'
   ) end
 
   context "with $user" do

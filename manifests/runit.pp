@@ -19,11 +19,14 @@ define deploy::runit(
     require => File[$deploy_path]
   }
 
+  $finish_tmpl = template('deploy/runit_finish.sh.erb')
+
   runit::service { $name:
-    user       => $user,
-    group      => $user,
-    rundir     => "${deploy_path}/services",
-    command    => "runsvdir ${deploy_path}/services",
-    require    => File["${deploy_path}/services"]
+    user           => $user,
+    group          => $user,
+    rundir         => "${deploy_path}/services",
+    command        => "runsvdir -P ${deploy_path}/services",
+    finish_content => $finish_tmpl,
+    require        => File["${deploy_path}/services"]
   }
 }
