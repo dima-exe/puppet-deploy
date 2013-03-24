@@ -3,23 +3,20 @@ require 'spec_helper'
 describe "deploy::application" do
   let(:title) { 'my-app' }
 
+  it { should include_class('deploy::params') }
+
   it do should contain_user('my-app').with(
     :ensure     => 'present',
     :system     => true,
     :managehome => true,
     :shell      => '/bin/bash',
-    :home       => '/home/my-app',
-    :require    => 'Group[my-app]'
-  ) end
-
-  it do should contain_group('my-app').with(
-    :ensure => 'present',
+    :home       => '/home/my-app'
   ) end
 
   it do should contain_file('/u/apps/my-app').with(
-    :ensure  => 'directory',
-    :owner   => 'my-app',
-    :mode    => '0755',
+    :ensure => 'directory',
+    :owner  => 'my-app',
+    :mode   => '0755',
     :require => 'User[my-app]'
   ) end
 
@@ -73,7 +70,6 @@ describe "deploy::application" do
 
   context "when $user" do
     let(:params) { { :user => 'my-user' } }
-    it { should contain_group("my-user") }
     it { should contain_user("my-user") }
     it { should contain_file("/home/my-user/.ssh") }
   end

@@ -57,12 +57,16 @@ define deploy::application(
     require => User[$user]
   }
 
+  $key_content = $ssh_key ? {
+    undef   => '',
+    default => inline_template('<%= [ssh_key].flatten.join("\n") %>')
+  }
   file { "/home/${user}/.ssh/authorized_keys":
     ensure  => 'present',
     owner   => $user,
     group   => $user,
     mode    => '0600',
-    content => inline_template('<%= ((ssh_key == :undef ? nil : (ssh_key.is_a?(Array) ? ssh_key : [ssh_key] )) || []).join("\n") %>'),
+    content => $key_content,
     require => File["/home/${user}/.ssh"]
   }
 }

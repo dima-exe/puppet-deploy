@@ -4,32 +4,38 @@ describe "deploy::postgresql" do
   let(:title) { 'my-user' }
   let(:facts) { { :postgres_default_version => '9.1', :osfamily => 'Debian' } }
 
-  it do should contain_resource("Postgresql::Role[my-user]").with(
-    :password_hash => /.+/,
-    :superuser     => false,
-    :require       => 'Class[Postgresql::Config]'
-  ) end
-
   context "when $superuser is true" do
     let(:params) { { :superuser => true } }
 
     it do should contain_resource("Postgresql::Role[my-user]").with(
+      :password_hash => /.+/,
       :superuser     => true,
+      :require       => 'Class[Postgresql::Config]'
     ) end
+
+    context "when $database" do
+      let(:params) { { :superuser => true, :database => %w{ foo bar } } }
+      %w{ foo bar }.each do |d|
+        it do should contain_resource("Postgresql::Database[#{d}]").with(
+          :locale  => "en_US.UTF-8",
+          :require => 'Class[Postgresql::Config]'
+        ) end
+      end
+    end
   end
 
   context "when $superuser is false and $databases" do
-    let(:params) { { :superuser => false, :databases => %w{ foo bar } } }
+    let(:params) { { :superuser => false, :database => %w{ foo bar } } }
 
-
-    it do should contain_resource("Postgresql::Database_grant[my-user]").with(
-      :privilege => 'ALL',
-      :db        => %w{ foo bar },
-      :role      => 'my-user',
-      :require   => %w{ Postgresql::Database_role[my-user]
-                        Postgresql::Database[foo]
-                        Postgresql::Database[bar] }
-    ) end
+    %w{ foo bar }.each do |d|
+      it do should contain_resource("Postgresql::Db[#{d}]").with(
+        :grant    => 'all',
+        :password => /.+/,
+        :user     => 'my-user',
+        :locale   => 'en_US.UTF-8',
+        :require  => 'Class[Postgresql::Config]'
+      ) end
+    end
 
   end
 end
