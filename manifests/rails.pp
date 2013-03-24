@@ -4,6 +4,7 @@ define deploy::rails(
   $user            = $name,
   $ssh_key         = undef,
   $deploy_to       = undef,
+  $runit           = false,
 
   $database_url    = undef,
   $resque_url      = undef,
@@ -21,7 +22,8 @@ define deploy::rails(
     ensure    => 'present',
     user      => $user,
     ssh_key   => $ssh_key,
-    deploy_to => $deploy_path
+    deploy_to => $deploy_path,
+    runit     => $runit
   }
 
   File {

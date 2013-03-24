@@ -82,4 +82,13 @@ describe "deploy::application" do
       it { should contain_file("/my/path/#{f}") }
     end
   end
+
+  context "when $runit" do
+    let(:params) { { :runit => true } }
+
+    it do should contain_resource("Deploy::Runit[my-app]").with(
+      :deploy_to => '/u/apps/my-app',
+      :user      => 'my-app',
+    ) end
+  end
 end
