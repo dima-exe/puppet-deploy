@@ -13,22 +13,18 @@ define deploy::application(
     default => $deploy_to
   }
 
-  group { $user:
-    ensure => 'present'
-  }
-
   user { $user:
     ensure     => present,
     system     => true,
     managehome => true,
     shell      => '/bin/bash',
-    home       => "/home/${user}",
-    require    => Group[$user],
+    home       => "/home/${user}"
   }
 
   file{ $deploy_path:
     ensure  => 'directory',
     owner   => $user,
+    group   => $user,
     mode    => '0755',
     require => User[$user]
   }
@@ -38,6 +34,7 @@ define deploy::application(
         "${deploy_path}/current"]:
     ensure  => 'directory',
     owner   => $user,
+    group   => $user,
     mode    => '0755',
     require => File[$deploy_path]
   }
@@ -47,6 +44,7 @@ define deploy::application(
           "${deploy_path}/shared/pids"]:
     ensure  => directory,
     owner   => $user,
+    group   => $user,
     mode    => '0755',
     require => File["${deploy_path}/shared"]
   }
@@ -55,12 +53,14 @@ define deploy::application(
     ensure  => 'directory',
     mode    => '0700',
     owner   => $user,
+    group   => $user,
     require => User[$user]
   }
 
   file { "/home/${user}/.ssh/authorized_keys":
     ensure  => 'present',
     owner   => $user,
+    group   => $user,
     mode    => '0600',
     content => inline_template('<%= ((ssh_key == :undef ? nil : (ssh_key.is_a?(Array) ? ssh_key : [ssh_key] )) || []).join("\n") %>'),
     require => File["/home/${user}/.ssh"]

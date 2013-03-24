@@ -1,40 +1,46 @@
 #
 define deploy::mysql(
   $password  = undef,
-  $databases = [],
-  $superuser = false
+  $database  = undef,
+  $superuser = false,
+  $host      = 'localhost',
+  $create_database = true
 ) {
-  validate_array($databases)
 
   $real_password = $password ? {
     undef   => $name,
     default => $password
   }
 
-  database_user{ $name:
+  $user = "${name}@${host}"
+
+  database_user{ $user:
     password_hash => mysql_password($real_password),
     provider      => 'mysql',
     require       => Class['mysql::config'],
   }
 
   if $superuser == true {
-    database_grant{ $name:
+    database_grant{ $user:
       privileges    => ['all'],
-      require       => Database_user[$name]
+      require       => Database_user[$user]
     }
   }
 
-  if size($databases) > 0 {
-    database { $databases:
-      ensure  => 'present',
-      require => Database_user[$name]
+  if $database != undef {
+
+    if $create_database == true {
+      database { $database:
+        ensure  => 'present',
+        require => Database_user[$user]
+      }
     }
 
     if $superuser == false {
-      $grant = regsubst($databases, '^(.*)$', "${name}/\1")
+      $grant = regsubst($database, '^(.*)$', "${user}/\\1")
       database_grant{ $grant:
         privileges    => ['all'],
-        require       => Database_user[$name]
+        require       => Database_user[$user]
       }
     }
   }

@@ -24,27 +24,34 @@ define deploy::rails(
     deploy_to => $deploy_path
   }
 
+  File {
+    require => Deploy::Application[$name]
+  }
+
   if $database_url != undef {
     file { "${deploy_path}/shared/config/database.yml":
-      ensure   => 'present',
-      owner    => $user,
-      mode     => '0640',
-      content  => template('deploy/database.yml.erb')
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0640',
+      content => template('deploy/database.yml.erb')
     }
   }
 
   if $resque_url != undef {
     file { "${deploy_path}/shared/config/resque.yml":
-      ensure   => 'present',
-      owner    => $user,
-      mode     => '0640',
-      content  => template('deploy/resque.yml.erb')
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0640',
+      content => template('deploy/resque.yml.erb')
     }
   }
 
   file{ "${deploy_path}/shared/config/unicorn.rb":
     ensure  => 'present',
     owner   => $user,
+    group   => $user,
     mode    => '0640',
     content => template('deploy/unicorn.rb.erb'),
   }

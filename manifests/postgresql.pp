@@ -1,39 +1,38 @@
 #
 define deploy::postgresql(
   $password  = undef,
-  $databases = [],
+  $database  = undef,
   $superuser = false
 ) {
-  validate_array($databases)
-
   $real_password = $password ? {
     undef   => $name,
     default => $password
   }
 
-  postgresql::database{ $databases:
-    charset => 'unicode',
-    locale  => 'en_US',
-    require => Class['postgresql::config']
-  }
+  if $superuser == true {
 
-  postgresql::role{ $name:
-    password_hash => postgresql_password($name, $real_password),
-    superuser     => $superuser,
-    login         => true,
-    createdb      => true,
-    require       => Class['postgresql::config']
-  }
+    if $database != undef {
+      postgresql::database{ $database:
+        locale  => 'en_US.UTF-8',
+        require => Class['postgresql::config']
+      }
+    }
 
-  if $superuser == false {
-
-    if size($databases) > 0 {
-      postgresql::database_grant{ $name:
-        privilege => 'ALL',
-        db        => $databases,
-        role      => $name,
-        require   => [Postgresql::Database_role[$name],
-                      Postgresql::Database[$databases]]
+    postgresql::role{ $name:
+      password_hash => postgresql_password($name, $real_password),
+      superuser     => true,
+      login         => true,
+      createdb      => true,
+      require       => Class['postgresql::config']
+    }
+  } else {
+    if $database != undef {
+      postgresql::db { $database:
+        user     => $name,
+        password => postgresql_password($name, $real_password),
+        grant    => 'all',
+        locale   => 'en_US.UTF-8',
+        require  => Class['postgresql::config']
       }
     }
   }

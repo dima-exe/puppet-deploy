@@ -4,9 +4,8 @@ setup: &setup
   host: "<%= u.host || "localhost" %>"
   username: "<%= u.user || title %>"
   password: "<%= u.password || title %>"
-  <% (u.query || "").split("&").each do |k| -%>
-  <% p = k.split("=") -%>
-  <%= p[0] %>: "<%= p[1] %>"
+  <% (u.query || "").split("&").map{|i| i.split("=") }.each do |k,v| %>
+  <%= k %>: "<%= v %>"
   <% end -%>
 
 <%= env %>:
