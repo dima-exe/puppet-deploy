@@ -1,10 +1,11 @@
 #
 define deploy::application(
-  $ensure     = 'present',
-  $user       = $name,
-  $ssh_key    = undef,
-  $deploy_to  = undef,
-  $runit      = undef
+  $ensure      = 'present',
+  $user        = $name,
+  $ssh_key     = undef,
+  $deploy_to   = undef,
+  $runit       = undef,
+  $server_name = undef,
 ) {
 
   include 'deploy::params'
@@ -74,6 +75,13 @@ define deploy::application(
     deploy::runit { $name:
       deploy_to => $deploy_path,
       user      => $user
+    }
+  }
+
+  if $server_name != undef {
+    deploy::nginx{ $name:
+      server_name => $server_name,
+      deploy_to   => $deploy_path
     }
   }
 }

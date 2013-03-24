@@ -1,0 +1,42 @@
+<%# "example.com example.com:80 example.com:8080" -> [[80, ["example.com", "example2.com"]], ["8080", "example.com"]] -%>
+<% config_hash = server_name.split(" ").map{|i| i.split(":") } -%>
+<% config_hash = config_hash.group_by{|i| i[1] || "80" } -%>
+<% config_hash = config_hash.map{|k,v| [k, v.map{|i| i.first }] } -%>
+<% config_hash = config_hash.sort_by{|i| i.first } -%>
+
+<% upstream = name.gsub(/[^a-z0-9]/, '_') + "_upstream" -%>
+
+upstream <%= upstream %> {
+  server unix:<%= deploy_path %>/shared/pids/web.sock fail_timeout=0;
+}
+
+<% config_hash.each do |port,server_names| %>
+server {
+  listen <%= port %>;
+
+  client_max_body_size 4G;
+  server_name <%= server_names.sort.join(" ") %>;
+
+  keepalive_timeout 5;
+
+  root <%= deploy_path %>/current/public;
+
+  try_files $uri/index.html $uri.html $uri @app;
+
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    proxy_set_header Host $http_host;
+
+    proxy_redirect off;
+
+    proxy_pass http://<%= upstream %>;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  location = /500.html {
+    root /<%= deploy_path %>/current/public;
+  }
+}
+<% end %>
+

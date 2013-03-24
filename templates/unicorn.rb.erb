@@ -4,7 +4,7 @@ rails_env   = '<%= env %>'
 
 worker_processes num_workers
 
-listen working_dir.join("tmp/pids/unicorn.sock").to_s, :backlog => 2048
+listen working_dir.join("tmp/pids/web.sock").to_s, :backlog => 2048
 # listen 8080, :tcp_nopush => true
 
 timeout 30
