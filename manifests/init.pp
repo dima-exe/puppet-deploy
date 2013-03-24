@@ -26,13 +26,10 @@ class deploy(
   }
 
   if $mysql != undef {
-    include 'mysql::server'
     create_resources('deploy::mysql', $mysql)
   }
 
   if $postgresql != undef {
-    include 'postgresql::server'
-    include 'deploy::fix::postgresql_template1_encoding'
     create_resources('deploy::postgresql', $postgresql)
   }
 }

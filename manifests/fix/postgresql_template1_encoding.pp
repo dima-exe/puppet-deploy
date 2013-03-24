@@ -1,8 +1,6 @@
 #
 class deploy::fix::postgresql_template1_encoding() {
 
-  Class['deploy::fix::postgresql_template1_encoding'] -> Postgresql::Database <| |>
-
   $file  = '/var/lib/postgresql/fix_template1_encoding.sql'
 
   file { $file:

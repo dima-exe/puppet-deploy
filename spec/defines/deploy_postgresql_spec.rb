@@ -2,7 +2,12 @@ require 'spec_helper'
 
 describe "deploy::postgresql" do
   let(:title) { 'my-user' }
-  let(:facts) { { :postgres_default_version => '9.1', :osfamily => 'Debian' } }
+  let(:facts) { { :postgres_default_version => '9.1',
+                  :osfamily                 => 'Debian',
+                  :concat_basedir           => '/var/lib/puppet/concat'  } }
+
+  it { should include_class("postgresql::server") }
+  it { should include_class("deploy::fix::postgresql_template1_encoding") }
 
   context "when $superuser is true" do
     let(:params) { { :superuser => true } }

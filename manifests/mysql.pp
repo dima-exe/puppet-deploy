@@ -7,6 +7,8 @@ define deploy::mysql(
   $create_database = true
 ) {
 
+  include 'mysql::server'
+
   $real_password = $password ? {
     undef   => $name,
     default => $password

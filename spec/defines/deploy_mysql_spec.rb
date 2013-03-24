@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe "deploy::mysql" do
   let(:title) { 'my-user' }
+  let(:facts) { {
+    :osfamily => "Debian"
+  } }
+
+  it { should include_class("mysql::server") }
 
   it do should contain_resource("Database_user[my-user@localhost]").with(
     :password_hash => /.*/,

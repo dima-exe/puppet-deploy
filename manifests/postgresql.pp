@@ -4,6 +4,11 @@ define deploy::postgresql(
   $database  = undef,
   $superuser = false
 ) {
+  include 'postgresql::server'
+  include 'deploy::fix::postgresql_template1_encoding'
+
+  Class['deploy::fix::postgresql_template1_encoding'] -> Postgresql::Database <| |>
+
   $real_password = $password ? {
     undef   => $name,
     default => $password
