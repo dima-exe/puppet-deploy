@@ -30,7 +30,6 @@ define deploy::application(
   }
 
   file{["${deploy_path}/shared",
-        "${deploy_path}/services",
         "${deploy_path}/current"]:
     ensure  => 'directory',
     owner   => $user,

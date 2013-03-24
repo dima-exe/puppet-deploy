@@ -20,7 +20,7 @@ describe "deploy::application" do
     :require => 'User[my-app]'
   ) end
 
-  %w{ shared services current }.each do |f|
+  %w{ shared current }.each do |f|
     it do should contain_file("/u/apps/my-app/#{f}").with(
       :ensure  => 'directory',
       :owner   => 'my-app',
@@ -78,7 +78,7 @@ describe "deploy::application" do
     let(:params) { { :deploy_to => '/my/path' } }
 
     it { should contain_file("/my/path") }
-    %w{ shared services current shared/config }.each do |f|
+    %w{ shared current shared/config }.each do |f|
       it { should contain_file("/my/path/#{f}") }
     end
   end
