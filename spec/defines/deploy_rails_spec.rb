@@ -115,4 +115,11 @@ describe "deploy::rails" do
       :runit     => true
     ) end
   end
+
+  context "when $server_name" do
+    let(:params) { { :server_name => 'example.com' } }
+    it do should contain_resource("Deploy::Application[my-app]").with(
+      :server_name => 'example.com'
+    ) end
+  end
 end

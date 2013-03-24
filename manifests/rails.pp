@@ -5,6 +5,7 @@ define deploy::rails(
   $ssh_key         = undef,
   $deploy_to       = undef,
   $runit           = false,
+  $server_name     = undef,
 
   $database_url    = undef,
   $resque_url      = undef,
@@ -19,11 +20,12 @@ define deploy::rails(
   }
 
   deploy::application{ $name:
-    ensure    => 'present',
-    user      => $user,
-    ssh_key   => $ssh_key,
-    deploy_to => $deploy_path,
-    runit     => $runit
+    ensure      => 'present',
+    user        => $user,
+    ssh_key     => $ssh_key,
+    deploy_to   => $deploy_path,
+    runit       => $runit,
+    server_name => $server_name
   }
 
   if $database_url != undef {
