@@ -26,17 +26,14 @@ define deploy::rails(
     runit     => $runit
   }
 
-  File {
-    require => Deploy::Application[$name]
-  }
-
   if $database_url != undef {
     file { "${deploy_path}/shared/config/database.yml":
       ensure  => 'present',
       owner   => $user,
       group   => $user,
       mode    => '0640',
-      content => template('deploy/database.yml.erb')
+      content => template('deploy/database.yml.erb'),
+      require => File["${deploy_path}/shared"]
     }
   }
 
@@ -46,7 +43,8 @@ define deploy::rails(
       owner   => $user,
       group   => $user,
       mode    => '0640',
-      content => template('deploy/resque.yml.erb')
+      content => template('deploy/resque.yml.erb'),
+      require => File["${deploy_path}/shared/config"]
     }
   }
 
@@ -56,5 +54,6 @@ define deploy::rails(
     group   => $user,
     mode    => '0640',
     content => template('deploy/unicorn.rb.erb'),
+    require => File["${deploy_path}/shared/config"]
   }
 }

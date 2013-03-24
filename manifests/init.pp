@@ -11,18 +11,20 @@ class deploy(
 
   $deploy_to = $deploy::params::deploy_to
 
-  Exec["/bin/mkdir -p ${deploy_to}"] -> Deploy::Application <| |>
-
   exec { "/bin/mkdir -p ${deploy_to}":
     creates => $deploy_to
   }
 
+  $defaults = {
+    require => Exec["/bin/mkdir -p ${deploy_to}"]
+  }
+
   if $applications != undef {
-    create_resources('deploy::application', $applications)
+    create_resources('deploy::application', $applications, $defaults)
   }
 
   if $rails != undef {
-    create_resources('deploy::rails', $rails)
+    create_resources('deploy::rails', $rails, $defaults)
   }
 
   if $mysql != undef {

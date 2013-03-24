@@ -9,8 +9,7 @@ describe "deploy::runit" do
   it do should contain_file("/u/apps/my-app/services").with(
     :ensure  => "directory",
     :owner   => 'my-app',
-    :mode    => '0755',
-    :require => 'File[/u/apps/my-app]'
+    :mode    => '0755'
   ) end
 
   it do should contain_resource("Runit::Service[my-app]").with(

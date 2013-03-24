@@ -16,7 +16,6 @@ define deploy::runit(
     owner   => $user,
     group   => $user,
     mode    => '0755',
-    require => File[$deploy_path]
   }
 
   $finish_tmpl = template('deploy/runit_finish.sh.erb')
