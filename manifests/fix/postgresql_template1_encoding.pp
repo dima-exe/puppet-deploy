@@ -11,7 +11,7 @@ class deploy::fix::postgresql_template1_encoding() {
     require => Class['postgresql::config']
   }
 
-  exec { 'deploy fix postgresql template1 encoding':
+  exec { 'deploy::fix::postgresql_template1_encoding':
     user    => 'postgres',
     onlyif  => '/usr/bin/psql -c "\l" | grep template1 | grep SQL_ASCII',
     command => "/usr/bin/psql -f ${file}",
