@@ -83,8 +83,8 @@ describe "deploy::application" do
     end
   end
 
-  context "when $runit" do
-    let(:params) { { :runit => true } }
+  context "when $services" do
+    let(:params) { { :services => true } }
 
     it do should contain_resource("Deploy::Runit[my-app]").with(
       :deploy_to => '/u/apps/my-app',

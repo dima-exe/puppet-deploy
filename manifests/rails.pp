@@ -4,7 +4,7 @@ define deploy::rails(
   $user            = $name,
   $ssh_key         = undef,
   $deploy_to       = undef,
-  $runit           = false,
+  $services        = false,
   $server_name     = undef,
 
   $database_url    = undef,
@@ -24,7 +24,7 @@ define deploy::rails(
     user        => $user,
     ssh_key     => $ssh_key,
     deploy_to   => $deploy_path,
-    runit       => $runit,
+    services    => $services,
     server_name => $server_name
   }
 

@@ -1,11 +1,11 @@
 #
 define deploy::application(
-  $ensure      = 'present',
-  $user        = $name,
-  $ssh_key     = undef,
-  $deploy_to   = undef,
-  $runit       = undef,
-  $server_name = undef,
+  $ensure       = 'present',
+  $user         = $name,
+  $ssh_key      = undef,
+  $deploy_to    = undef,
+  $services     = undef,
+  $server_name  = undef,
 ) {
 
   include 'deploy::params'
@@ -71,7 +71,7 @@ define deploy::application(
     require => File["/home/${user}/.ssh"]
   }
 
-  if $runit != undef {
+  if $services != undef {
     deploy::runit { $name:
       deploy_to => $deploy_path,
       user      => $user

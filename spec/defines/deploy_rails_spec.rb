@@ -8,7 +8,7 @@ describe "deploy::rails" do
     :user      => 'my-app',
     :ssh_key   => nil,
     :deploy_to => '/u/apps/my-app',
-    :runit     => false
+    :services  => false
   ) end
 
   it { should_not contain_file("/u/apps/my-app/shared/config/database.yml") }
@@ -109,10 +109,10 @@ describe "deploy::rails" do
     ) end
   end
 
-  context "when $runit is true" do
-    let(:params) { { :runit => true } }
+  context "when $services is true" do
+    let(:params) { { :services => true } }
     it do should contain_resource("Deploy::Application[my-app]").with(
-      :runit     => true
+      :services => true
     ) end
   end
 
