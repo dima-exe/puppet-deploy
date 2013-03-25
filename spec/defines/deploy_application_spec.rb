@@ -38,40 +38,22 @@ describe "deploy::application" do
     ) end
   end
 
-  it do should contain_file("/home/my-app/.ssh").with(
-    :ensure  => 'directory',
-    :mode    => '0700',
-    :owner   => 'my-app',
-    :require => 'User[my-app]'
-  ) end
-
-  it do should contain_file("/home/my-app/.ssh/authorized_keys").with(
-    :ensure  => 'present',
-    :owner   => 'my-app',
-    :mode    => '0600',
-    :content => '',
-    :require => "File[/home/my-app/.ssh]"
+  it do should contain_resource("Deploy::Ssh_authorized_key[my-app]").with(
+    :ssh_key => nil
   ) end
 
   context "when $ssh_key" do
-    context "is string" do
-      let(:params) { { :ssh_key => "ssh key" } }
-      it do should contain_file("/home/my-app/.ssh/authorized_keys").with(
-        :content => "ssh key"
-      ) end
-    end
-    context "is array" do
-      let(:params) { { :ssh_key => %w{ssh key} } }
-      it do should contain_file("/home/my-app/.ssh/authorized_keys").with(
-        :content => "ssh\nkey"
-      ) end
-    end
+    let(:params) { { :ssh_key => "ssh key" } }
+    it do should contain_resource("Deploy::Ssh_authorized_key[my-app]").with(
+      :ssh_key => 'ssh key'
+    ) end
   end
 
   context "when $user" do
     let(:params) { { :user => 'my-user' } }
     it { should contain_user("my-user") }
     it { should contain_file("/home/my-user/.ssh") }
+    it { should contain_resource("Deploy::Ssh_authorized_key[my-user]") }
   end
 
   context "when $deploy_to" do
