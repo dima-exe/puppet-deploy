@@ -16,15 +16,15 @@ describe "deploy::application" do
   it do should contain_file('/u/apps/my-app').with(
     :ensure => 'directory',
     :owner  => 'my-app',
-    :mode   => '0755',
+    :mode   => '0775',
     :require => 'User[my-app]'
   ) end
 
-  %w{ shared current }.each do |f|
+  %w{ shared }.each do |f|
     it do should contain_file("/u/apps/my-app/#{f}").with(
       :ensure  => 'directory',
       :owner   => 'my-app',
-      :mode    => '0755',
+      :mode    => '0775',
       :require => 'File[/u/apps/my-app]'
     ) end
   end
@@ -33,7 +33,7 @@ describe "deploy::application" do
     it do should contain_file("/u/apps/my-app/shared/#{f}").with(
       :ensure  => 'directory',
       :owner   => 'my-app',
-      :mode    => '0755',
+      :mode    => '0775',
       :require => 'File[/u/apps/my-app/shared]'
     ) end
   end
@@ -78,7 +78,7 @@ describe "deploy::application" do
     let(:params) { { :deploy_to => '/my/path' } }
 
     it { should contain_file("/my/path") }
-    %w{ shared current shared/config }.each do |f|
+    %w{ shared shared/config }.each do |f|
       it { should contain_file("/my/path/#{f}") }
     end
   end

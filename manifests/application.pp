@@ -27,16 +27,15 @@ define deploy::application(
     ensure  => 'directory',
     owner   => $user,
     group   => $user,
-    mode    => '0755',
+    mode    => '0775',
     require => User[$user]
   }
 
-  file{["${deploy_path}/shared",
-        "${deploy_path}/current"]:
+  file{["${deploy_path}/shared"]:
     ensure  => 'directory',
     owner   => $user,
     group   => $user,
-    mode    => '0755',
+    mode    => '0775',
     require => File[$deploy_path]
   }
 
@@ -46,7 +45,7 @@ define deploy::application(
     ensure  => directory,
     owner   => $user,
     group   => $user,
-    mode    => '0755',
+    mode    => '0775',
     require => File["${deploy_path}/shared"]
   }
 
