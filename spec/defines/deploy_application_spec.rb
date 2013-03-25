@@ -99,4 +99,17 @@ describe "deploy::application" do
       :deploy_to   => '/u/apps/my-app'
     ) end
   end
+
+  context "when $configs" do
+    let(:params) { {
+      :configs => {
+        "resque.yml" => "yaml",
+        "settings/production.yml" => {
+          "name" => "value"
+        }
+      }
+    } }
+
+    it { should be }
+  end
 end

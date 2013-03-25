@@ -6,6 +6,7 @@ define deploy::application(
   $deploy_to    = undef,
   $services     = undef,
   $server_name  = undef,
+  $configs      = undef,
 ) {
 
   include 'deploy::params'
@@ -82,5 +83,10 @@ define deploy::application(
       server_name => $server_name,
       deploy_to   => $deploy_path
     }
+  }
+
+  if $configs != undef {
+    $files_hash = deploy_application_configs_to_files("${deploy_path}/shared/config", $configs)
+    create_resources('file', $files_hash, { owner => $user, group => $user })
   }
 }

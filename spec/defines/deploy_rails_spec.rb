@@ -8,7 +8,8 @@ describe "deploy::rails" do
     :user      => 'my-app',
     :ssh_key   => nil,
     :deploy_to => '/u/apps/my-app',
-    :services  => false
+    :services  => false,
+    :configs   => nil
   ) end
 
   it { should_not contain_file("/u/apps/my-app/shared/config/database.yml") }
@@ -97,18 +98,6 @@ describe "deploy::rails" do
     end
   end
 
-  context "when $resque_url" do
-    let(:url) { 'redis://localhost/0' }
-    let(:params) { { :resque_url => url } }
-
-    it do should contain_file("/u/apps/my-app/shared/config/resque.yml").with(
-      :ensure  => 'present',
-      :owner   => 'my-app',
-      :mode    => '0640',
-      :content => /#{url}/
-    ) end
-  end
-
   context "when $services is true" do
     let(:params) { { :services => true } }
     it do should contain_resource("Deploy::Application[my-app]").with(
@@ -123,15 +112,11 @@ describe "deploy::rails" do
     ) end
   end
 
-  context "when $settings" do
-    let(:params) { { :settings => %w{ a b c } } }
-    it do should contain_file("/u/apps/my-app/shared/config/settings").with(
-      :ensure  => 'directory',
-      :require => 'File[/u/apps/my-app/shared/config]'
-    ) end
-    it do should contain_file("/u/apps/my-app/shared/config/settings/production.yml").with(
-      :content => params[:settings].to_yaml,
-      :require => "File[/u/apps/my-app/shared/config/settings]"
+  context "when $configs" do
+    let(:params) { { :configs => { "file" => "value" } } }
+
+    it do should contain_resource("Deploy::Application[my-app]").with(
+      :configs => {"file" => "value"}
     ) end
   end
 end

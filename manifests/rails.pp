@@ -6,12 +6,11 @@ define deploy::rails(
   $deploy_to       = undef,
   $services        = false,
   $server_name     = undef,
+  $configs         = undef,
 
   $database_url    = undef,
-  $resque_url      = undef,
   $env             = 'production',
-  $num_web_workers = 2,
-  $settings        = undef
+  $num_web_workers = 2
 ) {
   include 'deploy::params'
 
@@ -26,7 +25,8 @@ define deploy::rails(
     ssh_key     => $ssh_key,
     deploy_to   => $deploy_path,
     services    => $services,
-    server_name => $server_name
+    server_name => $server_name,
+    configs     => $configs
   }
 
   if $database_url != undef {
@@ -40,17 +40,6 @@ define deploy::rails(
     }
   }
 
-  if $resque_url != undef {
-    file { "${deploy_path}/shared/config/resque.yml":
-      ensure  => 'present',
-      owner   => $user,
-      group   => $user,
-      mode    => '0640',
-      content => template('deploy/resque.yml.erb'),
-      require => File["${deploy_path}/shared/config"]
-    }
-  }
-
   file{ "${deploy_path}/shared/config/unicorn.rb":
     ensure  => 'present',
     owner   => $user,
@@ -58,22 +47,5 @@ define deploy::rails(
     mode    => '0640',
     content => template('deploy/unicorn.rb.erb'),
     require => File["${deploy_path}/shared/config"]
-  }
-
-  if $settings != undef {
-    file{
-      "${deploy_path}/shared/config/settings":
-        ensure  => 'directory',
-        owner   => $user,
-        group   => $user,
-        require => File["${deploy_path}/shared/config"];
-      "${deploy_path}/shared/config/settings/${env}.yml":
-        ensure  => 'present',
-        owner   => $user,
-        group   => $user,
-        mode    => '0640',
-        content => inline_template('<%= settings.to_yaml %>'),
-        require => File["${deploy_path}/shared/config/settings"]
-    }
   }
 }
