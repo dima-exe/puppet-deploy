@@ -41,15 +41,6 @@ describe 'deploy_application_configs_to_files()' do
       it { should eq exp }
     end
 
-    context "when just file and hash" do
-      let(:yaml) { { "a resque" => "yaml" } }
-      let(:data) { { "resque.yml" => yaml } }
-      let(:exp)  { [
-        [ "/prefix/resque.yml", { :content => yaml.to_yaml } ]
-      ] }
-      it { should eq exp }
-    end
-
     context "when directory and file" do
       let(:data) { { "dir/resque.yml" => "yaml" } }
       let(:exp)  { [

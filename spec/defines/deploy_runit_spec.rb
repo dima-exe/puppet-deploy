@@ -17,6 +17,7 @@ describe "deploy::runit" do
     :rundir         => '/u/apps/my-app/services',
     :command        => 'runsvdir -P /u/apps/my-app/services',
     :finish_content => /.+/,
+    :logger         => false,
     :require        => 'File[/u/apps/my-app/services]'
   ) end
 

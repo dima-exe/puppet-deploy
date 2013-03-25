@@ -26,6 +26,7 @@ define deploy::runit(
     rundir         => "${deploy_path}/services",
     command        => "runsvdir -P ${deploy_path}/services",
     finish_content => $finish_tmpl,
+    logger         => false,
     require        => File["${deploy_path}/services"]
   }
 }

@@ -12,24 +12,17 @@ module Puppet::Parser::Functions
 
     hash_to_convert.is_a?(Hash) or raise Puppet::ParseError.new("deploy_application_configs_to_files last agrument must be Hash, was #{hash_to_convert.inspect}")
 
-
     files_hash = {}
 
-    hash_to_convert.each do |k,v|
+    hash_to_convert.each do |k,value|
       path = k.split("/")
       if path.size > 1
         files_hash["#{path_prefix}/#{path.first}"] = {
           :ensure => 'directory'
         }
       end
-      value = case v
-              when Hash
-                v.to_yaml
-              else
-                v.to_s
-              end
       files_hash["#{path_prefix}/#{path.join("/")}"] = {
-        :content => value
+        :content => value.to_s
       }
     end
 
