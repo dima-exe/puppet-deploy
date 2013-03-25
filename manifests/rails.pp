@@ -10,7 +10,8 @@ define deploy::rails(
   $database_url    = undef,
   $resque_url      = undef,
   $env             = 'production',
-  $num_web_workers = 2
+  $num_web_workers = 2,
+  $settings        = undef
 ) {
   include 'deploy::params'
 
@@ -57,5 +58,22 @@ define deploy::rails(
     mode    => '0640',
     content => template('deploy/unicorn.rb.erb'),
     require => File["${deploy_path}/shared/config"]
+  }
+
+  if $settings != undef {
+    file{
+      "${deploy_path}/shared/settings":
+        ensure  => 'directory',
+        owner   => $user,
+        group   => $user,
+        require => File["${deploy_path}/shared"];
+      "${deploy_path}/shared/settings/${env}.yml":
+        ensure  => 'present',
+        owner   => $user,
+        group   => $user,
+        mode    => '0640',
+        content => inline_template('<%= settings.to_yaml %>'),
+        require => File["${deploy_path}/shared"]
+    }
   }
 }
