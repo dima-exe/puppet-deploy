@@ -62,18 +62,18 @@ define deploy::rails(
 
   if $settings != undef {
     file{
-      "${deploy_path}/shared/settings":
+      "${deploy_path}/shared/config/settings":
         ensure  => 'directory',
         owner   => $user,
         group   => $user,
-        require => File["${deploy_path}/shared"];
-      "${deploy_path}/shared/settings/${env}.yml":
+        require => File["${deploy_path}/shared/config"];
+      "${deploy_path}/shared/config/settings/${env}.yml":
         ensure  => 'present',
         owner   => $user,
         group   => $user,
         mode    => '0640',
         content => inline_template('<%= settings.to_yaml %>'),
-        require => File["${deploy_path}/shared"]
+        require => File["${deploy_path}/shared/config/settings"]
     }
   }
 }

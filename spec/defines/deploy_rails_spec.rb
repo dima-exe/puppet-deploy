@@ -125,12 +125,13 @@ describe "deploy::rails" do
 
   context "when $settings" do
     let(:params) { { :settings => %w{ a b c } } }
-    it do should contain_file("/u/apps/my-app/shared/settings").with(
+    it do should contain_file("/u/apps/my-app/shared/config/settings").with(
       :ensure  => 'directory',
-      :require => 'File[/u/apps/my-app/shared]'
+      :require => 'File[/u/apps/my-app/shared/config]'
     ) end
-    it do should contain_file("/u/apps/my-app/shared/settings/production.yml").with(
-      :content => params[:settings].to_yaml
+    it do should contain_file("/u/apps/my-app/shared/config/settings/production.yml").with(
+      :content => params[:settings].to_yaml,
+      :require => "File[/u/apps/my-app/shared/config/settings]"
     ) end
   end
 end
