@@ -32,5 +32,11 @@ describe "deploy::ssh_authorized_key" do
         :content => "key\nssh\n"
       ) end
     end
+    context "with options" do
+      let(:params) { { :ssh_key =>  "key", :options => "foo=bar" } }
+      it do should contain_file("/home/user/.ssh/authorized_keys").with(
+        :content => "foo=bar key\n"
+      ) end
+    end
   end
 end

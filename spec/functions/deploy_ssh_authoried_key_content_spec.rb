@@ -17,7 +17,7 @@ describe 'deploy_ssh_authorized_key_content()' do
 
   context "make content" do
     let(:data) { "key" }
-    let(:options) { Hash.new }
+    let(:options) { '' }
     subject { scope.function_deploy_ssh_authorized_key_content([data, options]) }
 
     context "when just string" do
@@ -41,8 +41,8 @@ describe 'deploy_ssh_authorized_key_content()' do
     end
 
     context "when options" do
-      let(:options) { { :foo => "bar", :baz => "x" } }
-      it { should eq "baz=x, foo=bar key\n" }
+      let(:options) { "foo=bar" }
+      it { should eq "foo=bar key\n" }
     end
   end
 end

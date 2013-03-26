@@ -10,7 +10,7 @@ module Puppet::Parser::Functions
     (args.length == 1 || args.length == 2) or
       raise Puppet::ParseError.new("deploy_application_configs_to_files takes 1 arguments!")
 
-    options = args[1] || {}
+    options = args[1].to_s.strip
     keys = case args.first
            when Array
              args.first.map{|i| i.to_s}
@@ -39,8 +39,8 @@ module Puppet::Parser::Functions
         key
       end
     end.compact.sort.map do |key|
-      unless options.empty?
-        key = options.map{|k,v| "#{k}=#{v}" }.sort.join(", ") + " #{key}"
+      unless options == ''
+        key = "#{options} #{key}"
       end
       key
     end.join("\n") + "\n"

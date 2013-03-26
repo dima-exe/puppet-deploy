@@ -2,7 +2,7 @@
 define deploy::ssh_authorized_key(
   $ssh_key = undef,
   $user    = $name,
-  $options = {}
+  $options = undef
 ) {
 
   #$key_content = $ssh_key ? {
