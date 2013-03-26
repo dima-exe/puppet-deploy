@@ -7,8 +7,10 @@ module Puppet::Parser::Functions
     Get authorized_key content from string or array
   EOS
   ) do |args|
-    args.length == 1 or raise Puppet::ParseError.new("deploy_application_configs_to_files takes 1 arguments!")
+    (args.length == 1 || args.length == 2) or
+      raise Puppet::ParseError.new("deploy_application_configs_to_files takes 1 arguments!")
 
+    options = args[1] || {}
     keys = case args.first
            when Array
              args.first.map{|i| i.to_s}
@@ -16,28 +18,32 @@ module Puppet::Parser::Functions
              [args.first.to_s]
            end
 
+    http = Net::HTTP.new("api.github.com", 443)
+    http.use_ssl = true
+    http.verify_mode = 0
+
     keys.map do |key|
       if re = key.match(/^github\:\/\/(.*)$/)
         name = re[1]
         uri = URI("https://api.github.com/users/#{name}/keys")
-
         begin
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl = true if uri.scheme == 'https'
-          http.verify_mode = 0
-
           http.start do |h|
             res = h.request Net::HTTP::Get.new(uri.request_uri)
             json = JSON.load(res.body)
             json.first["key"] + " #{name}@github"
           end
-        rescue Exception => _
-          nil
+        rescue Exception => e
+          raise e
         end
       else
         key
       end
-    end.compact.sort.join("\n") + "\n"
+    end.compact.sort.map do |key|
+      unless options.empty?
+        key = options.map{|k,v| "#{k}=#{v}" }.sort.join(", ") + " #{key}"
+      end
+      key
+    end.join("\n") + "\n"
   end
 end
 

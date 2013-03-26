@@ -15,7 +15,7 @@ describe "deploy::ssh_authorized_key" do
     :owner   => 'user',
     :group   => 'user',
     :mode    => '0600',
-    :content => '',
+    :content => "\n",
     :require => "File[/home/user/.ssh]"
   ) end
 
@@ -23,13 +23,13 @@ describe "deploy::ssh_authorized_key" do
     context "is string" do
       let(:params) { { :ssh_key => "ssh key" } }
       it do should contain_file("/home/user/.ssh/authorized_keys").with(
-        :content => "ssh key"
+        :content => "ssh key\n"
       ) end
     end
     context "is array" do
       let(:params) { { :ssh_key => %w{ssh key} } }
       it do should contain_file("/home/user/.ssh/authorized_keys").with(
-        :content => "ssh\nkey"
+        :content => "key\nssh\n"
       ) end
     end
   end
