@@ -1,5 +1,3 @@
-require 'pp'
-
 module Puppet::Parser::Functions
   newfunction(:deploy_application_configs_to_files, :type => :rvalue, :doc => <<-EOS
     Convert deploy::application::configs to files hash
