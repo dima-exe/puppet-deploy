@@ -1,15 +1,14 @@
 #
 define deploy::ssh_authorized_key(
-  $ssh_key = undef,
-  $user    = $name,
-  $options = undef
+  $ssh_key         = undef,
+  $user            = $name,
+  $options         = undef
 ) {
+  include 'deploy::params'
 
-  #$key_content = $ssh_key ? {
-  #  undef   => '',
-  #  default => inline_template('<%= [ssh_key].flatten.join("\n") %>')
-  #}
-  $key_content = deploy_ssh_authorized_key_content($ssh_key, $options)
+  $key_content = deploy_ssh_authorized_key_content($ssh_key, {
+    key_options => $options, cache_path => $deploy::params::keys_cache_path
+  })
 
   file { "/home/${user}/.ssh":
     ensure  => 'directory',
