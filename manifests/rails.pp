@@ -6,9 +6,9 @@ define deploy::rails(
   $ssh_key_options = undef,
   $deploy_to       = undef,
   $services        = false,
-  $server_name     = undef,
   $configs         = undef,
 
+  $server_name     = undef,
   $database_url    = undef,
   $env             = 'production',
   $num_web_workers = 2
@@ -27,8 +27,16 @@ define deploy::rails(
     ssh_key_options => $ssh_key_options,
     deploy_to       => $deploy_path,
     services        => $services,
-    server_name     => $server_name,
     configs         => $configs
+  }
+
+  file{ "${deploy_path}/shared/config/unicorn.rb":
+    ensure  => 'present',
+    owner   => $user,
+    group   => $user,
+    mode    => '0640',
+    content => template('deploy/unicorn.rb.erb'),
+    require => File["${deploy_path}/shared/config"]
   }
 
   if $database_url != undef {
@@ -42,12 +50,11 @@ define deploy::rails(
     }
   }
 
-  file{ "${deploy_path}/shared/config/unicorn.rb":
-    ensure  => 'present',
-    owner   => $user,
-    group   => $user,
-    mode    => '0640',
-    content => template('deploy/unicorn.rb.erb'),
-    require => File["${deploy_path}/shared/config"]
+  if $server_name != undef {
+    include 'nginx'
+
+    nginx::site{ $name:
+      content => template('deploy/nginx.conf.erb'),
+    }
   }
 }

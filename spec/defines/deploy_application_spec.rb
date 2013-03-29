@@ -73,14 +73,6 @@ describe "deploy::application" do
     ) end
   end
 
-  context "when $server_name" do
-    let(:params) { { :server_name => "example.com" } }
-    it do should contain_resource("Deploy::Nginx[my-app]").with(
-      :server_name => 'example.com',
-      :deploy_to   => '/u/apps/my-app'
-    ) end
-  end
-
   context "when $configs" do
     let(:params) { {
       :configs => {

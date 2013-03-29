@@ -114,12 +114,20 @@ describe "deploy::rails" do
     ) end
   end
 
-  [:server_name, :ssh_key, :ssh_key_options].each do |k|
+  [:ssh_key, :ssh_key_options].each do |k|
     context "when $#{k}" do
       let(:params) { { k => k.to_s } }
       it do should contain_resource("Deploy::Application[my-app]").with(
         k => k.to_s
       ) end
     end
+  end
+
+  context "with $server_name" do
+    let(:params) { { :server_name => "example.com a.example.com:80 b.example.com:8080" } }
+    it { should include_class('nginx') }
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /server_name a.example.com example.com;/
+    ) end
   end
 end

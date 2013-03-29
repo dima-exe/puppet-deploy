@@ -6,7 +6,6 @@ define deploy::application(
   $ssh_key_options = undef,
   $deploy_to       = undef,
   $services        = undef,
-  $server_name     = undef,
   $configs         = undef,
 ) {
 
@@ -52,13 +51,6 @@ define deploy::application(
     deploy::runit { $name:
       deploy_to => $deploy_path,
       user      => $user
-    }
-  }
-
-  if $server_name != undef {
-    deploy::nginx{ $name:
-      server_name => $server_name,
-      deploy_to   => $deploy_path
     }
   }
 
