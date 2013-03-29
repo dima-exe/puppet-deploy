@@ -4,12 +4,13 @@ describe "deploy::rails" do
   let(:title) { 'my-app' }
 
   it do should contain_resource("Deploy::Application[my-app]").with(
-    :ensure    => "present",
-    :user      => 'my-app',
-    :ssh_key   => nil,
-    :deploy_to => '/u/apps/my-app',
-    :services  => false,
-    :configs   => nil
+    :ensure          => "present",
+    :user            => 'my-app',
+    :ssh_key         => nil,
+    :ssh_key_options => nil,
+    :deploy_to       => '/u/apps/my-app',
+    :supervisor      => false,
+    :configs         => nil
   ) end
 
   it { should_not contain_file("/u/apps/my-app/shared/config/database.yml") }
@@ -98,17 +99,10 @@ describe "deploy::rails" do
     end
   end
 
-  context "when $services is true" do
-    let(:params) { { :services => true } }
+  context "when $supervisor" do
+    let(:params) { { :supervisor => true } }
     it do should contain_resource("Deploy::Application[my-app]").with(
-      :services => true
-    ) end
-  end
-
-  context "when $server_name" do
-    let(:params) { { :server_name => 'example.com' } }
-    it do should contain_resource("Deploy::Application[my-app]").with(
-      :server_name => 'example.com'
+      :supervisor => true
     ) end
   end
 
@@ -117,6 +111,23 @@ describe "deploy::rails" do
 
     it do should contain_resource("Deploy::Application[my-app]").with(
       :configs => {"file" => "value"}
+    ) end
+  end
+
+  [:ssh_key, :ssh_key_options].each do |k|
+    context "when $#{k}" do
+      let(:params) { { k => k.to_s } }
+      it do should contain_resource("Deploy::Application[my-app]").with(
+        k => k.to_s
+      ) end
+    end
+  end
+
+  context "with $server_name" do
+    let(:params) { { :server_name => "example.com a.example.com:80 b.example.com:8080" } }
+    it { should include_class('nginx') }
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /server_name a.example.com example.com;/
     ) end
   end
 end
