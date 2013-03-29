@@ -6,4 +6,7 @@ describe "deploy" do
   it do should contain_exec("/bin/mkdir -p /u/apps").with(
     :creates => '/u/apps'
   ) end
+
+  context "when $rails" do
+  end
 end

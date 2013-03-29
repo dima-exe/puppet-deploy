@@ -3,8 +3,7 @@ class deploy(
   $applications = undef,
   $rails        = undef,
   $mysql        = undef,
-  $postgresql   = undef,
-  $nginx        = undef
+  $postgresql   = undef
 ) {
 
   include 'deploy::params'
