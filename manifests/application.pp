@@ -1,12 +1,13 @@
 #
 define deploy::application(
-  $ensure       = 'present',
-  $user         = $name,
-  $ssh_key      = undef,
-  $deploy_to    = undef,
-  $services     = undef,
-  $server_name  = undef,
-  $configs      = undef,
+  $ensure          = 'present',
+  $user            = $name,
+  $ssh_key         = undef,
+  $ssh_key_options = undef,
+  $deploy_to       = undef,
+  $services        = undef,
+  $server_name     = undef,
+  $configs         = undef,
 ) {
 
   include 'deploy::params'
@@ -16,12 +17,9 @@ define deploy::application(
     default => $deploy_to
   }
 
-  user { $user:
-    ensure     => present,
-    system     => true,
-    managehome => true,
-    shell      => '/bin/bash',
-    home       => "/home/${user}"
+  deploy::user{ $user:
+    ssh_key         => $ssh_key,
+    ssh_key_options => $ssh_key_options
   }
 
   file{ $deploy_path:
@@ -48,10 +46,6 @@ define deploy::application(
     group   => $user,
     mode    => '0775',
     require => File["${deploy_path}/shared"]
-  }
-
-  deploy::ssh_authorized_key{ $user:
-    ssh_key => $ssh_key
   }
 
   if $services != undef {

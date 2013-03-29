@@ -5,12 +5,9 @@ describe "deploy::application" do
 
   it { should include_class('deploy::params') }
 
-  it do should contain_user('my-app').with(
-    :ensure     => 'present',
-    :system     => true,
-    :managehome => true,
-    :shell      => '/bin/bash',
-    :home       => '/home/my-app'
+  it do should contain_resource('Deploy::User[my-app]').with(
+    :ssh_key         => nil,
+    :ssh_key_options => nil
   ) end
 
   it do should contain_file('/u/apps/my-app').with(
@@ -38,22 +35,24 @@ describe "deploy::application" do
     ) end
   end
 
-  it do should contain_resource("Deploy::Ssh_authorized_key[my-app]").with(
-    :ssh_key => nil
-  ) end
-
   context "when $ssh_key" do
     let(:params) { { :ssh_key => "ssh key" } }
-    it do should contain_resource("Deploy::Ssh_authorized_key[my-app]").with(
+    it do should contain_resource("Deploy::User[my-app]").with(
       :ssh_key => 'ssh key'
+    ) end
+  end
+
+  context "when $ssh_key_options" do
+    let(:params) { { :ssh_key_options => "ssh key options" } }
+    it do should contain_resource("Deploy::User[my-app]").with(
+      :ssh_key_options => 'ssh key options'
     ) end
   end
 
   context "when $user" do
     let(:params) { { :user => 'my-user' } }
     it { should contain_user("my-user") }
-    it { should contain_file("/home/my-user/.ssh") }
-    it { should contain_resource("Deploy::Ssh_authorized_key[my-user]") }
+    it { should contain_resource("Deploy::User[my-user]") }
   end
 
   context "when $deploy_to" do

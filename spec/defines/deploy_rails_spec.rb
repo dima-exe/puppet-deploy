@@ -4,12 +4,13 @@ describe "deploy::rails" do
   let(:title) { 'my-app' }
 
   it do should contain_resource("Deploy::Application[my-app]").with(
-    :ensure    => "present",
-    :user      => 'my-app',
-    :ssh_key   => nil,
-    :deploy_to => '/u/apps/my-app',
-    :services  => false,
-    :configs   => nil
+    :ensure          => "present",
+    :user            => 'my-app',
+    :ssh_key         => nil,
+    :ssh_key_options => nil,
+    :deploy_to       => '/u/apps/my-app',
+    :services        => false,
+    :configs         => nil
   ) end
 
   it { should_not contain_file("/u/apps/my-app/shared/config/database.yml") }
@@ -105,18 +106,20 @@ describe "deploy::rails" do
     ) end
   end
 
-  context "when $server_name" do
-    let(:params) { { :server_name => 'example.com' } }
-    it do should contain_resource("Deploy::Application[my-app]").with(
-      :server_name => 'example.com'
-    ) end
-  end
-
   context "when $configs" do
     let(:params) { { :configs => { "file" => "value" } } }
 
     it do should contain_resource("Deploy::Application[my-app]").with(
       :configs => {"file" => "value"}
     ) end
+  end
+
+  [:server_name, :ssh_key, :ssh_key_options].each do |k|
+    context "when $#{k}" do
+      let(:params) { { k => k.to_s } }
+      it do should contain_resource("Deploy::Application[my-app]").with(
+        k => k.to_s
+      ) end
+    end
   end
 end
