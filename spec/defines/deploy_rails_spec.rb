@@ -9,7 +9,7 @@ describe "deploy::rails" do
     :ssh_key         => nil,
     :ssh_key_options => nil,
     :deploy_to       => '/u/apps/my-app',
-    :services        => false,
+    :supervisor      => false,
     :configs         => nil
   ) end
 
@@ -99,10 +99,10 @@ describe "deploy::rails" do
     end
   end
 
-  context "when $services is true" do
-    let(:params) { { :services => true } }
+  context "when $supervisor" do
+    let(:params) { { :supervisor => true } }
     it do should contain_resource("Deploy::Application[my-app]").with(
-      :services => true
+      :supervisor => true
     ) end
   end
 

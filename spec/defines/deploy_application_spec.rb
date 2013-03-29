@@ -64,10 +64,10 @@ describe "deploy::application" do
     end
   end
 
-  context "when $services" do
-    let(:params) { { :services => true } }
+  context "when $supervisor" do
+    let(:params) { { :supervisor => true } }
 
-    it do should contain_resource("Deploy::Runit[my-app]").with(
+    it do should contain_resource("Deploy::Runit::Supervisor[my-app]").with(
       :deploy_to => '/u/apps/my-app',
       :user      => 'my-app'
     ) end

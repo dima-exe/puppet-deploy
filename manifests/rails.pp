@@ -5,7 +5,7 @@ define deploy::rails(
   $ssh_key         = undef,
   $ssh_key_options = undef,
   $deploy_to       = undef,
-  $services        = false,
+  $supervisor      = false,
   $configs         = undef,
 
   $server_name     = undef,
@@ -26,7 +26,7 @@ define deploy::rails(
     ssh_key         => $ssh_key,
     ssh_key_options => $ssh_key_options,
     deploy_to       => $deploy_path,
-    services        => $services,
+    supervisor      => $supervisor,
     configs         => $configs
   }
 

@@ -1,5 +1,5 @@
 #
-define deploy::runit(
+define deploy::runit::supervisor(
   $user      = $name,
   $deploy_to = undef,
 ) {

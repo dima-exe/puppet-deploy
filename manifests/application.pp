@@ -5,7 +5,7 @@ define deploy::application(
   $ssh_key         = undef,
   $ssh_key_options = undef,
   $deploy_to       = undef,
-  $services        = undef,
+  $supervisor      = undef,
   $configs         = undef,
 ) {
 
@@ -47,8 +47,8 @@ define deploy::application(
     require => File["${deploy_path}/shared"]
   }
 
-  if $services != undef {
-    deploy::runit { $name:
+  if $supervisor != undef {
+    deploy::runit::supervisor { $name:
       deploy_to => $deploy_path,
       user      => $user
     }
