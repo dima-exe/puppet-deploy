@@ -1,5 +1,6 @@
 #
 define deploy::mysql(
+  $ensure    = 'present',
   $password  = undef,
   $database  = undef,
   $superuser = false,

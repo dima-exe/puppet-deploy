@@ -3,7 +3,8 @@ class deploy(
   $applications = undef,
   $rails        = undef,
   $mysql        = undef,
-  $postgresql   = undef
+  $postgresql   = undef,
+  $users        = undef,
 ) {
 
   include 'deploy::params'
@@ -32,5 +33,9 @@ class deploy(
 
   if $postgresql != undef {
     create_resources('deploy::postgresql', $postgresql)
+  }
+
+  if $users != undef {
+    create_resources('deploy::user', $users)
   }
 }

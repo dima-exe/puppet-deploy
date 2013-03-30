@@ -1,5 +1,6 @@
 #
 define deploy::postgresql(
+  $ensure    = 'present',
   $password  = undef,
   $database  = undef,
   $superuser = false
