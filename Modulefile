@@ -6,4 +6,5 @@ license 'MIT'
 summary 'Puppet deploy management for applications, mysql and postgresql databases'
 project_page 'http://github.com/dima-exe/puppet-deploy'
 
-dependency 'puppetlabs/stdlib'
+dependency 'puppetlabs/stdlib', '>= 0'
+dependency 'dmexe/backup', '>= 0'

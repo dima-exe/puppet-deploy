@@ -7,6 +7,6 @@ fixtures:
     concat: 'git://github.com/ripienaar/puppet-concat.git'
     nginx: 'git://github.com/BenoitCattie/puppet-nginx.git'
     rbenv: 'git://github.com/dima-exe/puppet-rbenv.git'
-    ssh_authorized_key: 'git://github.com/lukas-hetzenecker/puppet-module-ssh_authorized_key.git'
+    backup: 'git://github.com/dima-exe/puppet-backup.git'
   symlinks:
     deploy: "#{source_dir}"
