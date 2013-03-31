@@ -7,4 +7,3 @@ summary 'Puppet deploy management for applications, mysql and postgresql databas
 project_page 'http://github.com/dima-exe/puppet-deploy'
 
 dependency 'puppetlabs/stdlib', '>= 0'
-dependency 'dmexe/backup', '>= 0'
