@@ -20,14 +20,14 @@ describe "deploy::rails" do
     :ensure  => 'present',
     :owner   => 'my-app',
     :mode    => '0640',
-    :content => /num_workers = 2/
+    :content => /#{Regexp.escape 'listen working_dir'}/
   ) end
 
   it do should contain_file("/u/apps/my-app/shared/config/puma.rb").with(
     :ensure  => 'present',
     :owner   => 'my-app',
     :mode    => '0640',
-    :content => /workers = 2/
+    :content => /#{Regexp.escape 'bind "unix://'}/
   ) end
 
   context "when $database_url" do
@@ -133,8 +133,50 @@ describe "deploy::rails" do
   context "with $server_name" do
     let(:params) { { :server_name => "example.com a.example.com:80 b.example.com:8080" } }
     it { should include_class('nginx') }
-    it do should contain_resource("Nginx::Site[my-app]").with(
-      :content => /server_name a.example.com example.com;/
+
+    it { should contain_resource("Nginx::Site[my-app]") }
+
+    context "setup server_name" do
+      it do should contain_resource("Nginx::Site[my-app]").with(
+        :content => /server_name a.example.com example.com;/
+      ) end
+    end
+
+    context "setup upstream" do
+      it do should contain_resource("Nginx::Site[my-app]").with(
+        :content => /#{Regexp.escape 'server unix:/u/apps/my-app/shared/pids/web.sock'}/
+      ) end
+    end
+  end
+
+  context "when $listen_addr" do
+    let(:params) { { :listen_addr => 'localhost:80' } }
+
+    it do should contain_file("/u/apps/my-app/shared/config/unicorn.rb").with(
+      :ensure  => 'present',
+      :owner   => 'my-app',
+      :mode    => '0640',
+      :content => /#{Regexp.escape 'listen "localhost:80"'}/
     ) end
+
+    it do should contain_file("/u/apps/my-app/shared/config/puma.rb").with(
+      :ensure  => 'present',
+      :owner   => 'my-app',
+      :mode    => '0640',
+      :content => /#{Regexp.escape 'bind "localhost:80"'}/
+    ) end
+
+    context "and $server_name" do
+      let(:params) { {
+        :server_name => "example.com",
+        :listen_addr => "localhost:80"
+      } }
+
+      context "setup upstream" do
+        it do should contain_resource("Nginx::Site[my-app]").with(
+          :content => /#{Regexp.escape 'server localhost:80;'}/
+        ) end
+    end
+    end
   end
 end

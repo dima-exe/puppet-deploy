@@ -11,7 +11,8 @@ define deploy::rails(
   $server_name     = undef,
   $database_url    = undef,
   $env             = 'production',
-  $num_web_workers = 2
+  $num_web_workers = 2,
+  $listen_addr     = undef
 ) {
   include 'deploy::params'
 
