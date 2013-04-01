@@ -1,5 +1,5 @@
 name    'dmexe-deploy'
-version '0.1.0'
+version '0.1.1'
 source 'http://github.com/dima-exe/puppet-deploy'
 author 'Dmitry Galinsky'
 license 'MIT'

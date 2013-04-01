@@ -9,7 +9,7 @@ describe "deploy::rails" do
     :ssh_key         => nil,
     :ssh_key_options => nil,
     :deploy_to       => '/u/apps/my-app',
-    :supervisor      => false,
+    :supervisor      => nil,
     :configs         => nil
   ) end
 
