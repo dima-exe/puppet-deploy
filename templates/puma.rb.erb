@@ -1,5 +1,7 @@
 #!/usr/bin/env puma
 
+require 'pathname'
+
 _num_workers = <%= num_web_workers %>
 _working_dir = Pathname.new('<%= deploy_path %>/current')
 _rails_env   = '<%= env %>'
