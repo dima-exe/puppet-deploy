@@ -5,6 +5,7 @@ class deploy(
   $mysql        = undef,
   $postgresql   = undef,
   $users        = undef,
+  $mongodb      = undef
 ) {
 
   include 'deploy::params'
@@ -39,5 +40,9 @@ class deploy(
 
   if $users != undef {
     create_resources('deploy::user', $users)
+  }
+
+  if $mongodb != undef {
+    create_resources('deploy::mongodb', $mongodb)
   }
 }

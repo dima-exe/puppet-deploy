@@ -3,6 +3,7 @@ fixtures:
     runit: "git://github.com/mstrauss/puppet-runit.git"
     mysql: 'git://github.com/puppetlabs/puppetlabs-mysql.git'
     postgresql: 'git://github.com/puppetlabs/puppet-postgresql.git'
+    mongodb: 'git://github.com/puppetlabs/puppetlabs-mongodb.git'
     stdlib: 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
     concat: 'git://github.com/ripienaar/puppet-concat.git'
     nginx: 'git://github.com/BenoitCattie/puppet-nginx.git'

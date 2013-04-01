@@ -1,0 +1,9 @@
+# mongodb logrotate - generated from Puppet
+/var/log/mongodb/mongodb.log {
+   copytruncate
+   delaycompress
+   compress
+   notifempty
+   missingok
+   create 640 mongodb mongodb
+}

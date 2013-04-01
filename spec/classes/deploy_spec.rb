@@ -93,4 +93,22 @@ describe "deploy" do
       ) end
     end
   end
+
+  context "when $mongodb" do
+    let(:facts) { {
+      :osfamily => "debian"
+    } }
+    let(:params) { {
+      :mongodb => {
+        "foo" => { "ensure" => "present" },
+        "bar" => { "ensure" => "present" }
+      }
+    } }
+
+    %w{ foo bar }.each do |u|
+      it do should contain_resource("Deploy::Mongodb[#{u}]").with(
+        :ensure => 'present'
+      ) end
+    end
+  end
 end
