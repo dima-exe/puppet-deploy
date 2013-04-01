@@ -163,7 +163,7 @@ describe "deploy::rails" do
       :ensure  => 'present',
       :owner   => 'my-app',
       :mode    => '0640',
-      :content => /#{Regexp.escape 'bind "localhost:80"'}/
+      :content => /#{Regexp.escape 'bind "tcp://localhost:80"'}/
     ) end
 
     context "and $server_name" do
