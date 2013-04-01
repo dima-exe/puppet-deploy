@@ -1,0 +1,26 @@
+#!/usr/bin/env puma
+
+_num_workers = <%= num_web_workers %>
+_working_dir = Pathname.new('<%= deploy_path %>/current')
+_rails_env   = '<%= env %>'
+
+directory _working_dir.to_s
+rackup _working_dir.join("config.ru").to_s
+environment = _rails_env.to_sym
+
+daemonize false
+
+pidfile _working_dir.join("tmp/pids/puma.pid").to_s
+state_path _working_dir.join("tmp/pids/puma.state").to_s
+threads 1,1
+bind "unix://" + _working_dir.join("tmp/pids/web.sock").to_s
+
+on_restart do
+  puts 'On restart...'
+end
+
+workers _num_workers
+
+on_worker_boot do
+  puts 'On worker boot...'
+end

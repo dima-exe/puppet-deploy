@@ -30,13 +30,21 @@ define deploy::rails(
     configs         => $configs
   }
 
-  file{ "${deploy_path}/shared/config/unicorn.rb":
-    ensure  => 'present',
-    owner   => $user,
-    group   => $user,
-    mode    => '0640',
-    content => template('deploy/unicorn.rb.erb'),
-    require => File["${deploy_path}/shared/config"]
+  file{
+    "${deploy_path}/shared/config/unicorn.rb":
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0640',
+      content => template('deploy/unicorn.rb.erb'),
+      require => File["${deploy_path}/shared/config"];
+    "${deploy_path}/shared/config/puma.rb":
+      ensure  => 'present',
+      owner   => $user,
+      group   => $user,
+      mode    => '0640',
+      content => template('deploy/puma.rb.erb'),
+      require => File["${deploy_path}/shared/config"];
   }
 
   if $database_url != undef {

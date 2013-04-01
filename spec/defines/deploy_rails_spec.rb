@@ -23,6 +23,13 @@ describe "deploy::rails" do
     :content => /num_workers = 2/
   ) end
 
+  it do should contain_file("/u/apps/my-app/shared/config/puma.rb").with(
+    :ensure  => 'present',
+    :owner   => 'my-app',
+    :mode    => '0640',
+    :content => /workers = 2/
+  ) end
+
   context "when $database_url" do
     let(:file) { '/u/apps/my-app/shared/config/database.yml' }
     let(:url) { 'postgres://user:password@host/database?param=value'  }
