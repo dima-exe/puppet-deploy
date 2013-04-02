@@ -20,14 +20,14 @@ describe "deploy::rails" do
     :ensure  => 'present',
     :owner   => 'my-app',
     :mode    => '0640',
-    :content => /#{Regexp.escape 'listen working_dir'}/
+    :content => /#{Regexp.escape 'listen "127.0.0.1:3000"'}/
   ) end
 
   it do should contain_file("/u/apps/my-app/shared/config/puma.rb").with(
     :ensure  => 'present',
     :owner   => 'my-app',
     :mode    => '0640',
-    :content => /#{Regexp.escape 'bind "unix://'}/
+    :content => /#{Regexp.escape 'bind "tcp://127.0.0.1:3000"'}/
   ) end
 
   context "when $database_url" do
@@ -144,7 +144,7 @@ describe "deploy::rails" do
 
     context "setup upstream" do
       it do should contain_resource("Nginx::Site[my-app]").with(
-        :content => /#{Regexp.escape 'server unix:/u/apps/my-app/shared/pids/web.sock'}/
+        :content => /#{Regexp.escape 'server 127.0.0.1:3000'}/
       ) end
     end
   end

@@ -12,7 +12,7 @@ define deploy::rails(
   $database_url    = undef,
   $env             = 'production',
   $num_web_workers = 2,
-  $listen_addr     = undef
+  $listen_addr     = '127.0.0.1:3000'
 ) {
   include 'deploy::params'
 
