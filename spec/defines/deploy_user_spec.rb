@@ -58,4 +58,11 @@ describe "deploy::user" do
       ) end
     end
   end
+
+  context "when $ensure is absent" do
+    let(:params) { { :ensure => 'absent' } }
+
+    it { should contain_user("my-user").with_ensure('absent') }
+    it { should contain_file("/home/my-user").with_ensure('absent') }
+  end
 end

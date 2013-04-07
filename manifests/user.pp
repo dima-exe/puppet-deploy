@@ -16,6 +16,12 @@ define deploy::user(
     home       => "/home/${name}"
   }
 
+  if $ensure == 'absent' {
+    file { "/home/${name}":
+      ensure => 'absent'
+    }
+  }
+
   if $ensure == 'present' {
 
     file { "/home/${name}":
