@@ -27,6 +27,8 @@ define deploy::postgresql(
     postgresql::role{ $name:
       password_hash => postgresql_password($name, $real_password),
       superuser     => true,
+      login         => true,
+      createdb      => true,
       require       => Class['postgresql::config']
     }
   } else {
