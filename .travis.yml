@@ -7,6 +7,6 @@ branches:
 env:
   - PUPPET_VERSION="3.1"
   - PUPPET_VERSION="3.2.2"
-script: "bundle exec rake SPEC_OPTS='--format documentation'"
+script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
 
-bundle_args: ""
+bundler_args: ""
