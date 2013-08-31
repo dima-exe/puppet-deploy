@@ -29,9 +29,11 @@ define deploy::postgresql(
       superuser     => true,
       login         => true,
       createdb      => true,
+      replication   => true,
       require       => Class['postgresql::config']
     }
   } else {
+
     if $database != undef {
       postgresql::db { $database:
         user     => $name,
@@ -41,5 +43,6 @@ define deploy::postgresql(
         require  => Class['postgresql::config']
       }
     }
+
   }
 }
