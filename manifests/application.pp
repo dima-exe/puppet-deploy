@@ -31,6 +31,7 @@ define deploy::application(
 
   file{["${deploy_path}/shared",
         "${deploy_path}/releases"]:
+    ensure  => 'directory',
     owner   => $user,
     group   => $user,
     mode    => '0775',
