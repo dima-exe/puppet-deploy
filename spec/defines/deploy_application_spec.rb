@@ -17,7 +17,7 @@ describe "deploy::application" do
     :require => 'User[my-app]'
   ) end
 
-  %w{ shared }.each do |f|
+  %w{ shared releases }.each do |f|
     it do should contain_file("/u/apps/my-app/#{f}").with(
       :ensure  => 'directory',
       :owner   => 'my-app',

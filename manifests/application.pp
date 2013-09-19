@@ -29,8 +29,8 @@ define deploy::application(
     require => User[$user]
   }
 
-  file{["${deploy_path}/shared"]:
-    ensure  => 'directory',
+  file{["${deploy_path}/shared",
+        "${deploy_path}/releases"]:
     owner   => $user,
     group   => $user,
     mode    => '0775',
