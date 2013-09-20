@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'deploy_application_configs_to_files()' do
+describe 'deploy_application_configs_to_files()', :type => :function do
   let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
   let(:data) { {
     "resque.yml" => {

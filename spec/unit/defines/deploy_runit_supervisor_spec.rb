@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::runit::supervisor" do
+describe "deploy::runit::supervisor", :type => :define do
   let(:title) { 'my-app' }
 
   it { should include_class("runit") }

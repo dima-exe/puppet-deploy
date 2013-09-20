@@ -5,10 +5,12 @@ define deploy::postgresql(
   $database  = undef,
   $superuser = false
 ) {
+
   include 'postgresql::server'
   include 'deploy::fix::postgresql_template1_encoding'
 
-  Class['deploy::fix::postgresql_template1_encoding'] -> Postgresql::Database <| |>
+  Class['deploy::fix::postgresql_template1_encoding'] ->
+    Postgresql::Database <| |>
 
   $real_password = $password ? {
     undef   => $name,
@@ -32,6 +34,7 @@ define deploy::postgresql(
       replication   => true,
       require       => Class['postgresql::config']
     }
+
   } else {
 
     if $database != undef {

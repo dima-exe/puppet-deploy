@@ -8,6 +8,6 @@ env:
   - PUPPET_GEM_VERSION="3.1.0"
   - PUPPET_GEM_VERSION="3.2.0"
   - PUPPET_GEM_VERSION="3.3.0"
-script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
+script: "bundle exec rake spec SPEC_OPTS='--format documentation' SPEC=spec/unit"
 
 bundler_args: ""

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::user" do
+describe "deploy::user", :type => :define do
   let(:title) { 'my-user' }
 
   it { should include_class("deploy::params") }

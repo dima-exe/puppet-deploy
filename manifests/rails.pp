@@ -63,7 +63,7 @@ define deploy::rails(
     include 'nginx'
 
     nginx::site{ $name:
-      content => template('deploy/nginx.conf.erb'),
+      content => template('deploy/nginx_rails.conf.erb'),
     }
   }
 }

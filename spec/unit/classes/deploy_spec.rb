@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy" do
+describe "deploy", :type => :class do
   let(:params) { Hash.new }
 
   it { should include_class("deploy::params") }

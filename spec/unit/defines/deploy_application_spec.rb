@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::application" do
+describe "deploy::application", :type => :define do
   let(:title) { 'my-app' }
 
   it { should include_class('deploy::params') }

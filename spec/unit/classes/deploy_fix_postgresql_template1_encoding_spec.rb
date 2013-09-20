@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::fix::postgresql_template1_encoding" do
+describe "deploy::fix::postgresql_template1_encoding", :type => :class do
   let(:file) { '/var/lib/postgresql/fix_template1_encoding.sql' }
 
   it do should contain_file(file).with(

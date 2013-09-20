@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::rails" do
+describe "deploy::rails", :type => :define do
   let(:title) { 'my-app' }
 
   it do should contain_resource("Deploy::Application[my-app]").with(
