@@ -7,3 +7,5 @@ gem 'puppet', puppetversion, :require => false
 gem 'puppet-lint'
 gem 'puppetlabs_spec_helper', :require => false
 gem 'webmock'
+gem 'rspec-system-puppet'
+gem 'puppet-blacksmith'

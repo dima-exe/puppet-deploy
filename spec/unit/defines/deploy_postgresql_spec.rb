@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::postgresql" do
+describe "deploy::postgresql", :type => :define do
   let(:title) { 'my-user' }
   let(:facts) { { :postgres_default_version => '9.1',
                   :osfamily                 => 'Debian',

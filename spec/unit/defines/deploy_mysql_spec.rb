@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "deploy::mysql" do
+describe "deploy::mysql", :type => :define do
   let(:title) { 'my-user' }
   let(:facts) { {
     :osfamily => "Debian"

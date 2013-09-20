@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'deploy_ssh_authorized_key_content()' do
+describe 'deploy_ssh_authorized_key_content()', :type => :function do
   include WebMock::API
 
   let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
