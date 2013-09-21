@@ -138,7 +138,7 @@ describe "deploy::rails", :type => :define do
       :server_name   => "example.com",
       :upstream      => "127.0.0.1:3000",
       :is_rails      => true,
-      :document_root => "/u/apps/my-app/current/public",
+      :document_root => "/u/apps/my-app/current/public"
     ) end
   end
 
