@@ -111,4 +111,22 @@ describe "deploy", :type => :class do
       ) end
     end
   end
+
+  context "when $sites" do
+    let(:params) { {
+      :sites => {
+        "foo" => {
+          "document_root" => "document_root",
+          "server_name"   => "server_name"
+        },
+      }
+    } }
+
+    %w{ foo }.each do |u|
+      it do should contain_resource("Deploy::Nginx::Site[#{u}]").with(
+        :document_root => 'document_root',
+        :server_name   => "server_name"
+      ) end
+    end
+  end
 end

@@ -5,7 +5,10 @@ puppetversion = ENV['PUPPET_GEM_VERSION'] ? "~> #{ENV['PUPPET_GEM_VERSION']}" : 
 gem 'rake'
 gem 'puppet', puppetversion, :require => false
 gem 'puppet-lint'
-gem 'puppetlabs_spec_helper', :require => false
-gem 'webmock'
+gem 'puppetlabs_spec_helper'
 gem 'rspec-system-puppet'
-gem 'puppet-blacksmith'
+gem 'webmock'
+
+group :development do
+  gem 'puppet-blacksmith'
+end

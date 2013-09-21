@@ -5,7 +5,8 @@ class deploy(
   $mysql        = undef,
   $postgresql   = undef,
   $users        = undef,
-  $mongodb      = undef
+  $mongodb      = undef,
+  $sites        = undef,
 ) {
 
   include 'deploy::params'
@@ -44,5 +45,9 @@ class deploy(
 
   if $mongodb != undef {
     create_resources('deploy::mongodb', $mongodb)
+  }
+
+  if $sites != undef {
+    create_resources('deploy::nginx::site', $sites)
   }
 }

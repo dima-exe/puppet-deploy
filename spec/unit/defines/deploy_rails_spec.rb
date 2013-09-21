@@ -131,22 +131,15 @@ describe "deploy::rails", :type => :define do
   end
 
   context "with $server_name" do
-    let(:params) { { :server_name => "example.com a.example.com:80 b.example.com:8080" } }
-    it { should include_class('nginx') }
+    let(:params) { { :server_name => "example.com" } }
 
-    it { should contain_resource("Nginx::Site[my-app]") }
-
-    context "setup server_name" do
-      it do should contain_resource("Nginx::Site[my-app]").with(
-        :content => /server_name a.example.com example.com;/
-      ) end
-    end
-
-    context "setup upstream" do
-      it do should contain_resource("Nginx::Site[my-app]").with(
-        :content => /#{Regexp.escape 'server 127.0.0.1:3000'}/
-      ) end
-    end
+    it do should contain_resource("Deploy::Nginx::Site[my-app]").with(
+      :ensure        => 'present',
+      :server_name   => "example.com",
+      :upstream      => "127.0.0.1:3000",
+      :is_rails      => true,
+      :document_root => "/u/apps/my-app/current/public",
+    ) end
   end
 
   context "when $listen_addr" do
@@ -166,17 +159,5 @@ describe "deploy::rails", :type => :define do
       :content => /#{Regexp.escape 'bind "tcp://localhost:80"'}/
     ) end
 
-    context "and $server_name" do
-      let(:params) { {
-        :server_name => "example.com",
-        :listen_addr => "localhost:80"
-      } }
-
-      context "setup upstream" do
-        it do should contain_resource("Nginx::Site[my-app]").with(
-          :content => /#{Regexp.escape 'server localhost:80;'}/
-        ) end
-    end
-    end
   end
 end

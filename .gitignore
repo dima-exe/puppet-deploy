@@ -1,4 +1,5 @@
-spec/fixtures
+spec/fixtures/
 pkg/
 Gemfile.lock
-.vagrant
+.vagrant/
+.rspec_system/

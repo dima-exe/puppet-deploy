@@ -18,7 +18,8 @@ define deploy::user(
 
   if $ensure == 'absent' {
     file { "/home/${name}":
-      ensure => 'absent'
+      ensure => 'absent',
+      force  => true
     }
   }
 

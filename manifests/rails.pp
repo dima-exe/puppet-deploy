@@ -60,10 +60,18 @@ define deploy::rails(
   }
 
   if $server_name != undef {
-    include 'nginx'
 
-    nginx::site{ $name:
-      content => template('deploy/nginx_rails.conf.erb'),
+    $nginx_upstream = $listen_addr ? {
+      undef   => "unix:${deploy_path}/shared/pids/web.sock",
+      default => $listen_addr
+    }
+
+    deploy::nginx::site{ $name:
+      ensure        => 'present',
+      server_name   => $server_name,
+      upstream      => $nginx_upstream,
+      document_root => "${deploy_path}/current/public",
+      is_rails      => true
     }
   }
 }
