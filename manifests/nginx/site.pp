@@ -9,6 +9,7 @@ define deploy::nginx::site(
 ) {
 
   include 'nginx'
+  include 'deploy::fix::nginx_server_names_hash_bucket_size'
 
   $auth_basic_file = "/etc/nginx/${name}.httpasswd"
 
