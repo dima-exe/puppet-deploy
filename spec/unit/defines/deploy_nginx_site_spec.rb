@@ -49,4 +49,18 @@ describe "deploy::nginx::site", :type => :define do
     end
   end
 
+  context "with $auth_basic" do
+    let(:params) { default_params.merge :auth_basic => %w{ foo:bar } }
+
+    it do should contain_file("/etc/nginx/my-app.httpasswd").with(
+      :content => "foo:bar",
+      :mode    => '0600',
+      :owner   => 'www-data'
+    ) end
+
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /auth_basic_user_file/
+    ) end
+  end
+
 end

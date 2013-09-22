@@ -1,11 +1,11 @@
-num_workers = <%= num_web_workers %>
-working_dir = Pathname.new('<%= deploy_path %>/current')
-rails_env   = '<%= env %>'
+num_workers = <%= @num_web_workers %>
+working_dir = Pathname.new('<%= @deploy_path %>/current')
+rails_env   = '<%= @env %>'
 
 worker_processes num_workers
 
 <%- if listen_addr != :undef -%>
-listen "<%= listen_addr %>"
+listen "<%= @listen_addr %>"
 <%- else -%>
 listen working_dir.join("tmp/pids/web.sock").to_s, :backlog => 2048
 <%- end -%>

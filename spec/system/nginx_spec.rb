@@ -47,13 +47,38 @@ describe "Deploy User" do
         sites => {
           site => {
             document_root => "/tmp",
-            server_name   => "example.com"
+            server_name   => "example.com",
           }
         }
       }
     EOS
 
     puppet_apply(pp) do |r|
+      r.exit_code.should == 2
+      r.refresh
+      r.exit_code.should == 0
+    end
+
+    shell "nginx -t" do |r|
+      expect(r.exit_code).to eq 0
+    end
+  end
+
+  it 'should create nginx site with auth_basic' do
+    pp = <<-EOS
+      class { 'deploy':
+        sites => {
+          site => {
+            document_root => "/tmp",
+            server_name   => "example.com",
+            auth_basic    => ['foo:bar']
+          }
+        }
+      }
+    EOS
+
+    puppet_apply(pp) do |r|
+
       r.exit_code.should == 2
       r.refresh
       r.exit_code.should == 0

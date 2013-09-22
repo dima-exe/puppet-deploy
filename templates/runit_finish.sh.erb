@@ -1,4 +1,4 @@
 #!/bin/sh
-echo "Stopping <%= name %>"
-sv -w600 force-stop <%= deploy_path %>/services/*
-sv exit <%= deploy_path %>/services/*
+echo "Stopping <%= @name %>"
+sv -w600 force-stop <%= @deploy_path %>/services/*
+sv exit <%= @deploy_path %>/services/*

@@ -1,4 +1,4 @@
-<% u = URI(database_url) -%>
+<% u = URI(@database_url) -%>
 setup: &setup
   adapter: "<%= u.scheme %>"
   host: "<%= u.host || "localhost" %>"
