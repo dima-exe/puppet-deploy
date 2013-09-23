@@ -1,5 +1,6 @@
 require 'json'
 require 'net/http'
+require 'net/https'
 
 module Puppet::Parser::Functions
   newfunction(:deploy_ssh_authorized_key_content, :type => :rvalue, :doc => <<-EOS
@@ -46,7 +47,7 @@ module Puppet::Parser::Functions
     download_github_key = lambda do |name|
       begin
         github_http.call.start do |http|
-          res = http.request Net::HTTP::Get.new("/users/#{name}.keys")
+          res = http.request Net::HTTP::Get.new("/#{name}.keys")
           json = JSON.load(res.body)
           json.last["key"] + " #{name}@github"
         end
