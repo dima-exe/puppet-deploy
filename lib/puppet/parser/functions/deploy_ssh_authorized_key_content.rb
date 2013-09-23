@@ -48,7 +48,7 @@ module Puppet::Parser::Functions
         github_http.call.start do |http|
           res = http.request Net::HTTP::Get.new("/users/#{name}/keys")
           json = JSON.load(res.body)
-          json.first["key"] + " #{name}@github"
+          json.last["key"] + " #{name}@github"
         end
       rescue Exception => e
         Puppet.notice "Github key fail: #{e.inspect}"
