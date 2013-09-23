@@ -61,12 +61,12 @@ describe 'deploy_ssh_authorized_key_content()', :type => :function do
       end
 
       def mock_github
-        stub_request(:get, "https://api.github.com/users/dima-exe/keys").
+        stub_request(:get, "https://github.com/users/dima-exe.keys").
           to_return(:status => 200, :body => %{[{"key": "ssh key"}]}, :headers => {})
       end
 
       def mock_failed_github
-        stub_request(:get, "https://api.github.com/users/dima-exe/keys").
+        stub_request(:get, "https://github.com/users/dima-exe.keys").
           to_return(:status => 404, :body => '', :headers => {})
       end
     end

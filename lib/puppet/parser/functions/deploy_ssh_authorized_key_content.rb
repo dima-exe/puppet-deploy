@@ -9,7 +9,7 @@ module Puppet::Parser::Functions
 
     github_http = lambda do
       @github_http ||= begin
-        http = Net::HTTP.new("api.github.com", 443)
+        http = Net::HTTP.new("github.com", 443)
         http.use_ssl = true
         http.verify_mode = 0
         http
@@ -46,7 +46,7 @@ module Puppet::Parser::Functions
     download_github_key = lambda do |name|
       begin
         github_http.call.start do |http|
-          res = http.request Net::HTTP::Get.new("/users/#{name}/keys")
+          res = http.request Net::HTTP::Get.new("/users/#{name}.keys")
           json = JSON.load(res.body)
           json.last["key"] + " #{name}@github"
         end
