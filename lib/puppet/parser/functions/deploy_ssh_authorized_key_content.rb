@@ -48,7 +48,7 @@ module Puppet::Parser::Functions
       begin
         github_http.call.start do |http|
           res = http.request Net::HTTP::Get.new("/#{name}.keys")
-          res = res.split("\n").last
+          res = res.body.split("\n").last
           res + " #{name}@github"
         end
       rescue Exception => e
