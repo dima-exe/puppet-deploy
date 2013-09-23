@@ -62,7 +62,7 @@ describe 'deploy_ssh_authorized_key_content()', :type => :function do
 
       def mock_github
         stub_request(:get, "https://github.com/dima-exe.keys").
-          to_return(:status => 200, :body => %{[{"key": "ssh key"}]}, :headers => {})
+          to_return(:status => 200, :body => %{ssh key2\nssh key}, :headers => {})
       end
 
       def mock_failed_github
