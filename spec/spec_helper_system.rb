@@ -22,6 +22,7 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'deploy')
     shell('puppet module install puppetlabs/postgresql --version 2.5.0')
     shell('puppet module install puppetlabs/mysql --version 0.9.0')
+    shell('puppet module install steakknife/runit --version 0.1.1')
     shell("curl https://codeload.github.com/BenoitCattie/puppet-nginx/tar.gz/master -o /tmp/nginx.tgz")
     shell("tar -vzxf /tmp/nginx.tgz -C /etc/puppet/modules")
     shell("mv /etc/puppet/modules/puppet-nginx-master /etc/puppet/modules/nginx")

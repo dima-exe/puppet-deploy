@@ -129,4 +129,26 @@ describe "deploy", :type => :class do
       ) end
     end
   end
+
+  context "when $services" do
+    let(:params) { {
+      :services => {
+        "foo" => {
+          "rundir"  => "/run/dir",
+          "command" => "command"
+        },
+        "bar" => {
+          "rundir"  => "/run/dir",
+          "command" => "command"
+        },
+      }
+    } }
+
+    %w{ foo }.each do |u|
+      it do should contain_resource("Deploy::Runit::Service[#{u}]").with(
+        :rundir  => '/run/dir',
+        :command => "command"
+      ) end
+    end
+  end
 end

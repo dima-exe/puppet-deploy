@@ -7,6 +7,7 @@ class deploy(
   $users        = undef,
   $mongodb      = undef,
   $sites        = undef,
+  $services     = undef,
 ) {
 
   include 'deploy::params'
@@ -49,5 +50,9 @@ class deploy(
 
   if $sites != undef {
     create_resources('deploy::nginx::site', $sites)
+  }
+
+  if $services != undef {
+    create_resources('deploy::runit::service', $services)
   }
 }

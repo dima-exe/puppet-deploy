@@ -20,7 +20,7 @@ define deploy::runit::supervisor(
 
   $finish_tmpl = template('deploy/runit_finish.sh.erb')
 
-  runit::service { $name:
+  ::runit::service { $name:
     user           => $user,
     group          => $user,
     rundir         => "${deploy_path}/services",

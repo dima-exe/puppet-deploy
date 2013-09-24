@@ -37,16 +37,9 @@ describe "deploy::nginx::site", :type => :define do
       :content => /server 127.0.0.1:3000/
     ) end
 
-    context "and $is_rails" do
-      let(:params) { default_params.merge(
-        :is_rails => true,
-        :upstream => "127.0.0.1:3000"
-      )}
-
-      it do should contain_resource("Nginx::Site[my-app]").with(
-        :content => /try_files/
-      ) end
-    end
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /try_files/
+    ) end
   end
 
   context "with $auth_basic" do
