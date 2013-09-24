@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'fileutils'
 
 describe 'deploy_ssh_authorized_key_content()', :type => :function do
   include WebMock::API
@@ -27,6 +28,39 @@ describe 'deploy_ssh_authorized_key_content()', :type => :function do
     context "when $key is array" do
       let(:data) { %w{ foo bar } }
       it { should eq "bar\nfoo\n" }
+    end
+
+    context "when evrone:// prefix" do
+      let(:key) { "ssh key dima@evrone.ru\n" }
+      let(:data) { "evrone://dima" }
+      let(:file) { '/tmp/evrone.keys' }
+      let(:options) { {
+        'cache_path' => "/tmp",
+        'evrone_keys_path' => file
+      } }
+
+      context "when keys file exists" do
+        after do
+          FileUtils.rm_f(file)
+        end
+
+        before do
+          FileUtils.rm_f(file)
+          File.open(file, 'w') do |io|
+            io.write({"dima" => key}.to_json)
+          end
+        end
+        it { should eq key }
+      end
+
+      context "when keys file does not exists" do
+        before do
+          FileUtils.rm_f(file)
+        end
+
+        it { should eq "\n" }
+      end
+
     end
 
     context "when github:// prefix" do

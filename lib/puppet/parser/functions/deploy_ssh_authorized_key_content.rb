@@ -68,6 +68,18 @@ module Puppet::Parser::Functions
 
     cache_path = options["cache_path"]
     key_options = options["key_options"]
+    evrone_keys_path = options["evrone_keys_path"] || "/etc/puppet/files/evrone/keys.json"
+    evrone_keys = {}
+    if File.readable?(evrone_keys_path)
+      begin
+        evrone_keys = JSON.parse(File.read evrone_keys_path)
+      rescue Exception => e
+        Puppet.notice "Evrone keys fail: #{e.inspect}"
+      end
+
+    end
+
+
     key_options = nil if key_options == :undef
 
     unless cache_path && File.directory?(cache_path)
@@ -84,6 +96,10 @@ module Puppet::Parser::Functions
           key = cache_get.call(cache_path, name, key)
         end
         key
+      elsif re = key.match(/^evrone\:\/\/(.*)$/)
+        name = re[1]
+        key = evrone_keys[name]
+        key && key.strip
       else
         key
       end
