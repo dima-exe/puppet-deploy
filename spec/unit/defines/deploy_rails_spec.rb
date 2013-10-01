@@ -131,14 +131,19 @@ describe "deploy::rails", :type => :define do
   end
 
   context "with $server_name" do
-    let(:params) { { :server_name => "example.com" } }
+    let(:params) { {
+      :server_name  => "example.com",
+      :ssl_cert     => 'ssl cert',
+      :ssl_cert_key => "ssl cert key"
+    } }
 
     it do should contain_resource("Deploy::Nginx::Site[my-app]").with(
       :ensure        => 'present',
       :server_name   => "example.com",
       :upstream      => "127.0.0.1:3000",
-      :is_rails      => true,
-      :document_root => "/u/apps/my-app/current/public"
+      :document_root => "/u/apps/my-app/current/public",
+      :ssl_cert      => "ssl cert",
+      :ssl_cert_key  => 'ssl cert key'
     ) end
   end
 

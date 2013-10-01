@@ -6,7 +6,7 @@ define deploy::application(
   $ssh_key_options = undef,
   $deploy_to       = undef,
   $supervisor      = undef,
-  $configs         = undef,
+  $configs         = undef
 ) {
 
   include 'deploy::params'

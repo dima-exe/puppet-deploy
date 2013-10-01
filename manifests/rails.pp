@@ -12,7 +12,10 @@ define deploy::rails(
   $database_url    = undef,
   $env             = 'production',
   $num_web_workers = 2,
-  $listen_addr     = '127.0.0.1:3000'
+  $listen_addr     = '127.0.0.1:3000',
+
+  $ssl_cert        = undef,
+  $ssl_cert_key    = undef
 ) {
   include 'deploy::params'
 
@@ -71,7 +74,8 @@ define deploy::rails(
       server_name   => $server_name,
       upstream      => $nginx_upstream,
       document_root => "${deploy_path}/current/public",
-      is_rails      => true
+      ssl_cert      => $ssl_cert,
+      ssl_cert_key  => $ssl_cert_key
     }
   }
 }

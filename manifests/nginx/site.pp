@@ -2,19 +2,48 @@
 define deploy::nginx::site(
   $server_name,
   $document_root,
-  $is_rails   = false,
-  $upstream   = undef,
-  $auth_basic = undef,
-  $ensure     = 'present'
+  $upstream     = undef,
+  $auth_basic   = undef,
+  $ssl_cert     = undef,
+  $ssl_cert_key = undef,
+  $ensure       = 'present'
 ) {
 
   include 'nginx'
 
   $auth_basic_file = "/etc/nginx/${name}.httpasswd"
 
+  $ssl_cert_file = $ssl_cert ? {
+    undef   => undef,
+    default => "/etc/nginx/ssl/${name}.crt"
+  }
+
+  $ssl_cert_key_file = $ssl_cert_key ? {
+    undef   => undef,
+    default => "/etc/nginx/ssl/${name}.key"
+  }
+
   ::nginx::site{ $name:
     ensure  => $ensure,
     content => template('deploy/nginx/site.conf.erb')
+  }
+
+  if $ssl_cert_file != undef {
+    file { $ssl_cert_file:
+      ensure  => $ensure,
+      content => $ssl_cert,
+      owner   => 'www-data',
+      notify  => Service['nginx']
+    }
+  }
+
+  if $ssl_cert_key_file != undef {
+    file { $ssl_cert_key_file:
+      ensure  => $ensure,
+      content => $ssl_cert_key,
+      owner   => 'www-data',
+      notify  => Service['nginx']
+    }
   }
 
   if $auth_basic != undef  and $ensure == 'present' {
