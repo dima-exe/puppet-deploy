@@ -59,7 +59,7 @@ describe "deploy::nginx::site", :type => :define do
   context "with $ssl_cert" do
     let(:params) { default_params.merge :ssl_cert => "ssl cert" }
     it do should contain_file("/etc/nginx/ssl/my-app.crt").with(
-      :content => "ssl cert",
+      :source  => "ssl cert",
       :owner   => 'www-data',
       :notify  => 'Service[nginx]'
     ) end
@@ -72,7 +72,7 @@ describe "deploy::nginx::site", :type => :define do
   context "with $ssl_cert_key" do
     let(:params) { default_params.merge :ssl_cert_key => "ssl cert key" }
     it do should contain_file("/etc/nginx/ssl/my-app.key").with(
-      :content => "ssl cert key",
+      :source  => "ssl cert key",
       :owner   => 'www-data',
       :notify  => 'Service[nginx]'
     ) end

@@ -31,7 +31,7 @@ define deploy::nginx::site(
   if $ssl_cert_file != undef {
     file { $ssl_cert_file:
       ensure  => $ensure,
-      content => $ssl_cert,
+      source  => $ssl_cert,
       owner   => 'www-data',
       notify  => Service['nginx']
     }
@@ -40,7 +40,7 @@ define deploy::nginx::site(
   if $ssl_cert_key_file != undef {
     file { $ssl_cert_key_file:
       ensure  => $ensure,
-      content => $ssl_cert_key,
+      source  => $ssl_cert_key,
       owner   => 'www-data',
       notify  => Service['nginx']
     }
