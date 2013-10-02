@@ -43,6 +43,10 @@ server {
 
     proxy_set_header X-Real-IP $remote_addr;
 
+    <% if port == '443' -%>
+    proxy_set_header X-SSL 1;
+    <% end -%>
+
     proxy_redirect off;
 
     proxy_pass http://<%= upstream_id %>;
