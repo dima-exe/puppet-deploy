@@ -15,7 +15,8 @@ define deploy::rails(
   $listen_addr     = '127.0.0.1:3000',
 
   $ssl_cert        = undef,
-  $ssl_cert_key    = undef
+  $ssl_cert_key    = undef,
+  $auth_basic      = undef,
 ) {
   include 'deploy::params'
 
@@ -75,7 +76,8 @@ define deploy::rails(
       upstream      => $nginx_upstream,
       document_root => "${deploy_path}/current/public",
       ssl_cert      => $ssl_cert,
-      ssl_cert_key  => $ssl_cert_key
+      ssl_cert_key  => $ssl_cert_key,
+      auth_basic    => $auth_basic,
     }
   }
 }
