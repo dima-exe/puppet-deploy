@@ -8,7 +8,7 @@ _rails_env   = '<%= @env %>'
 
 directory _working_dir.to_s
 rackup _working_dir.join("config.ru").to_s
-environment = _rails_env.to_sym
+environment _rails_env
 
 daemonize false
 
