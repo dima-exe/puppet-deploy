@@ -8,10 +8,12 @@ define deploy::rabbitmq(
   $read_permission      = '.*',
   $write_permission     = '.*'
 ) {
-  class { 'rabbitmq': }
+  include 'rabbitmq'
 
-  rabbitmq_vhost { $vhost:
-    ensure   => 'present',
+  if ! defined(Rabbitmq_vhost[$vhost]) {
+    rabbitmq_vhost { $vhost:
+      ensure   => 'present',
+    }
   }
 
   rabbitmq_user { $name:

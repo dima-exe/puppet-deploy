@@ -151,4 +151,27 @@ describe "deploy", :type => :class do
       ) end
     end
   end
+
+  context "when $rabbitmq" do
+    let(:facts) { { :osfamily => "Debian" } }
+    let(:params) { {
+      :rabbitmq => {
+        "foo" => {
+          "vhost"    => "/",
+          "password" => "pass"
+        },
+        "bar" => {
+          "vhost"    => "/",
+          "password" => "pass"
+        },
+      }
+    } }
+
+    %w{ foo bar }.each do |u|
+      it do should contain_resource("Deploy::Rabbitmq[#{u}]").with(
+        :vhost    => "/",
+        :password => "pass"
+      ) end
+    end
+  end
 end
