@@ -15,5 +15,9 @@ fixtures:
     nginx: 'git://github.com/BenoitCattie/puppet-nginx.git'
     rbenv: 'git://github.com/dima-exe/puppet-rbenv.git'
     backup: 'git://github.com/dima-exe/puppet-backup.git'
+    rabbitmq:
+      repo: "git://github.com/puppetlabs/puppetlabs-rabbitmq.git"
+      ref: "3.1.0"
+    apt: "git://github.com/puppetlabs/puppetlabs-apt.git"
   symlinks:
     deploy: "#{source_dir}"

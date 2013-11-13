@@ -8,6 +8,7 @@ class deploy(
   $mongodb      = undef,
   $sites        = undef,
   $services     = undef,
+  $rabbitmq     = undef,
 ) {
 
   include 'deploy::params'
@@ -54,5 +55,9 @@ class deploy(
 
   if $services != undef {
     create_resources('deploy::runit::service', $services)
+  }
+
+  if $rabbitmq != undef {
+    create_resources('deploy::rabbitmq', $rabbitmq)
   }
 }
