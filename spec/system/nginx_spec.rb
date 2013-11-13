@@ -1,7 +1,7 @@
 
 require 'spec_helper_system'
 
-describe "Deploy User" do
+describe "Deploy Nginx" do
 
   after do
     pp = <<-EOS
@@ -16,7 +16,7 @@ describe "Deploy User" do
     end
   end
 
-  it 'should create nginx site with upstream and is_rails' do
+  it 'should create nginx site with upstream' do
     pp = <<-EOS
       class { 'deploy':
         sites => {
@@ -24,7 +24,6 @@ describe "Deploy User" do
             document_root => "/tmp",
             server_name   => "example.com",
             upstream      => "127.0.0.1:3000",
-            is_rails      => true
           }
         }
       }
