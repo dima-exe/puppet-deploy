@@ -5,7 +5,7 @@ setup: &setup
   username: "<%= u.user || title %>"
   password: "<%= u.password || title %>"
   <% (u.query || "").split("&").map{|i| i.split("=") }.each do |k,v| %>
-  <%= k %>: "<%= v %>"
+  <%= k %>: <%= k == "pool" ? v : "\"#{v}\"" %>
   <% end -%>
 
 <%= env %>:
