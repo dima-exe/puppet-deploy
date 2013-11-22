@@ -49,7 +49,8 @@ describe "deploy::nginx::site", :type => :define do
       :content => "foo:bar",
       :mode    => '0600',
       :owner   => 'www-data',
-      :notify  => 'Service[nginx]'
+      :notify  => 'Service[nginx]',
+      :require => 'Package[nginx]'
     ) end
 
     it do should contain_resource("Nginx::Site[my-app]").with(
@@ -62,7 +63,8 @@ describe "deploy::nginx::site", :type => :define do
     it do should contain_file("/etc/nginx/ssl/my-app.crt").with(
       :source  => "ssl cert",
       :owner   => 'www-data',
-      :notify  => 'Service[nginx]'
+      :notify  => 'Service[nginx]',
+      :require => 'Package[nginx]'
     ) end
 
     it do should contain_resource("Nginx::Site[my-app]").with(
@@ -75,7 +77,8 @@ describe "deploy::nginx::site", :type => :define do
     it do should contain_file("/etc/nginx/ssl/my-app.key").with(
       :source  => "ssl cert key",
       :owner   => 'www-data',
-      :notify  => 'Service[nginx]'
+      :notify  => 'Service[nginx]',
+      :require => 'Package[nginx]'
     ) end
 
     it do should contain_resource("Nginx::Site[my-app]").with(

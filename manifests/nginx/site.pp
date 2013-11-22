@@ -33,7 +33,8 @@ define deploy::nginx::site(
       ensure  => $ensure,
       source  => $ssl_cert,
       owner   => 'www-data',
-      notify  => Service['nginx']
+      notify  => Service['nginx'],
+      require => Package['nginx']
     }
   }
 
@@ -42,7 +43,8 @@ define deploy::nginx::site(
       ensure  => $ensure,
       source  => $ssl_cert_key,
       owner   => 'www-data',
-      notify  => Service['nginx']
+      notify  => Service['nginx'],
+      require => Package['nginx']
     }
   }
 
@@ -53,7 +55,8 @@ define deploy::nginx::site(
       content => inline_template('<%= @auth_basic.join "\n" %>'),
       mode    => '0600',
       owner   => 'www-data',
-      notify  => Service['nginx']
+      notify  => Service['nginx'],
+      require => Package['nginx']
     }
   }
 
