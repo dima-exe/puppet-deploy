@@ -48,7 +48,8 @@ describe "deploy::nginx::site", :type => :define do
     it do should contain_file("/etc/nginx/my-app.httpasswd").with(
       :content => "foo:bar",
       :mode    => '0600',
-      :owner   => 'www-data'
+      :owner   => 'www-data',
+      :notify  => 'Service[nginx]'
     ) end
 
     it do should contain_resource("Nginx::Site[my-app]").with(

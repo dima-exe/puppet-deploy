@@ -52,7 +52,8 @@ define deploy::nginx::site(
     file{ $auth_basic_file:
       content => inline_template('<%= @auth_basic.join "\n" %>'),
       mode    => '0600',
-      owner   => 'www-data'
+      owner   => 'www-data',
+      notify  => Service['nginx']
     }
   }
 
