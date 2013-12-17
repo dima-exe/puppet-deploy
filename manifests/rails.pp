@@ -17,6 +17,8 @@ define deploy::rails(
   $ssl_cert        = undef,
   $ssl_cert_key    = undef,
   $auth_basic      = undef,
+
+  $puma_threads    = '1,1'
 ) {
   include 'deploy::params'
 

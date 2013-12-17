@@ -30,6 +30,14 @@ describe "deploy::rails", :type => :define do
     :content => /#{Regexp.escape 'bind "tcp://127.0.0.1:3000"'}/
   ) end
 
+  context "when $puma_threads" do
+    let(:params) { { :puma_threads => "0,16" } }
+
+    it do should contain_file("/u/apps/my-app/shared/config/puma.rb").with(
+      :content => /threads 0,16/
+    ) end
+  end
+
   context "when $database_url" do
     let(:file) { '/u/apps/my-app/shared/config/database.yml' }
     let(:url) { 'postgres://user:password@host/database?param=value'  }

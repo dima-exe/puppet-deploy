@@ -14,9 +14,9 @@ daemonize false
 
 pidfile _working_dir.join("tmp/pids/puma.pid").to_s
 state_path _working_dir.join("tmp/pids/puma.state").to_s
-threads 1,1
+threads <%= @puma_threads %>
 <%- if @listen_addr -%>
-bind "tcp://<%= listen_addr %>"
+bind "tcp://<%= @listen_addr %>"
 <%- else -%>
 bind "unix://" + _working_dir.join("tmp/pids/web.sock").to_s
 <%- end -%>
