@@ -6,7 +6,8 @@ define deploy::nginx::site(
   $auth_basic   = undef,
   $ssl_cert     = undef,
   $ssl_cert_key = undef,
-  $ensure       = 'present'
+  $ensure       = 'present',
+  $sse_enable   = false
 ) {
 
   include 'nginx'

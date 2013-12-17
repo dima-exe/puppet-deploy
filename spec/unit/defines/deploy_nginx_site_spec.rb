@@ -74,6 +74,7 @@ describe "deploy::nginx::site", :type => :define do
 
   context "with $ssl_cert_key" do
     let(:params) { default_params.merge :ssl_cert_key => "ssl cert key" }
+
     it do should contain_file("/etc/nginx/ssl/my-app.key").with(
       :source  => "ssl cert key",
       :owner   => 'www-data',
@@ -84,6 +85,18 @@ describe "deploy::nginx::site", :type => :define do
     it do should contain_resource("Nginx::Site[my-app]").with(
       :content => /ssl_certificate_key/
     ) end
+  end
+
+  context "with $sse_enable and $upstream" do
+    let(:params) { default_params.merge :sse_enable => '/sse', :upstream => 'upstream' }
+
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /proxy_http_version 1\.1;/
+    ) end
+    it do should contain_resource("Nginx::Site[my-app]").with(
+      :content => /#{Regexp.escape("location ~ ^/sse {")}/
+    ) end
+
   end
 
 end

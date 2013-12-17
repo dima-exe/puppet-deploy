@@ -18,7 +18,8 @@ define deploy::rails(
   $ssl_cert_key    = undef,
   $auth_basic      = undef,
 
-  $puma_threads    = '1,1'
+  $puma_threads    = '1,1',
+  $sse_enable      = false
 ) {
   include 'deploy::params'
 
@@ -80,6 +81,7 @@ define deploy::rails(
       ssl_cert      => $ssl_cert,
       ssl_cert_key  => $ssl_cert_key,
       auth_basic    => $auth_basic,
+      sse_enable    => $sse_enable
     }
   }
 }

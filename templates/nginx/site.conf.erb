@@ -36,14 +36,13 @@ server {
 
   <% if @upstream -%>
   try_files $uri/index.html $uri.html $uri @app;
+
   location @app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
     proxy_set_header Host $http_host;
-
     proxy_set_header X-Real-IP $remote_addr;
 
-    <% if port == '443' -%>
+    <% if @port == '443' -%>
     proxy_set_header X-SSL 1;
     proxy_set_header X-Forwarded-Proto https;
     <% end -%>
@@ -52,6 +51,23 @@ server {
 
     proxy_pass http://<%= upstream_id %>;
   }
+
+  <% if @sse_enable -%>
+  location ~ ^<%= @sse_enable %> {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Connection '';
+
+    proxy_http_version 1.1;
+    chunked_transfer_encoding off;
+    proxy_buffering off;
+    proxy_cache off;
+
+    proxy_pass http://<%= upstream_id %>;
+  }
+  <% end -%>
+
   <% end -%>
 
   error_page 500 502 503 504 /500.html;
