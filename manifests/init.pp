@@ -1,14 +1,15 @@
 #
 class deploy(
-  $applications = undef,
-  $rails        = undef,
-  $mysql        = undef,
-  $postgresql   = undef,
-  $users        = undef,
-  $mongodb      = undef,
-  $sites        = undef,
-  $services     = undef,
-  $rabbitmq     = undef,
+  $applications  = undef,
+  $rails         = undef,
+  $mysql         = undef,
+  $postgresql    = undef,
+  $users         = undef,
+  $mongodb       = undef,
+  $sites         = undef,
+  $services      = undef,
+  $rabbitmq      = undef,
+  $elasticsearch = undef,
 ) {
 
   include 'deploy::params'
@@ -59,5 +60,12 @@ class deploy(
 
   if $rabbitmq != undef {
     create_resources('deploy::rabbitmq', $rabbitmq)
+  }
+
+  if $elasticsearch != undef {
+    include 'elasticsearch'
+    if $elasticsearch != true {
+      create_resources('elasticsearch::plugin', $elasticsearch['plugins'])
+    }
   }
 }

@@ -174,4 +174,30 @@ describe "deploy", :type => :class do
       ) end
     end
   end
+
+  context "when $elasticsearch is true" do
+    let(:facts) { { :operatingsystem => "Debian" } }
+    let(:params) { {
+      :elasticsearch => true
+    } }
+
+    it { should include_class("elasticsearch") }
+  end
+
+  context "when $elasticsearch with plugins" do
+    let(:facts) { { :operatingsystem => "Debian" } }
+    let(:params) { {
+      :elasticsearch => {
+        "plugins" => {
+          'name' => {
+            "module_dir" => "dir",
+            "url"        => "url"
+          }
+        }
+      }
+    } }
+
+    it { should include_class("elasticsearch") }
+    it { should contain_resource("Elasticsearch::Plugin[name]") }
+  end
 end
