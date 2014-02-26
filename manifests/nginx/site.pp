@@ -7,7 +7,8 @@ define deploy::nginx::site(
   $ssl_cert     = undef,
   $ssl_cert_key = undef,
   $ensure       = 'present',
-  $sse_enable   = false
+  $sse_enable   = false,
+  $config_file  = undef
 ) {
 
   include 'nginx'
@@ -24,9 +25,14 @@ define deploy::nginx::site(
     default => "/etc/nginx/ssl/${name}.key"
   }
 
+  $site_content = $config_file ? {
+    undef   => template('deploy/nginx/site.conf.erb'),
+    default => $config_file
+  }
+
   ::nginx::site{ $name:
     ensure  => $ensure,
-    content => template('deploy/nginx/site.conf.erb')
+    content => $site_content
   }
 
   if $ssl_cert_file != undef {
